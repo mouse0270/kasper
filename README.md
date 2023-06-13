@@ -75,6 +75,7 @@ Distributed under the MIT License. See [LICENSE]([license-url]) for more informa
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
+The Animated Ghost used is from the Noto Color Emoji font by Google [License](https://fonts.google.com/noto/specimen/Noto+Color+Emoji/about)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
