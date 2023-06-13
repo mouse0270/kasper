@@ -55,7 +55,7 @@ Hooks.once('setup', async () => {
 	MODULE.setting('register', 'globalDefaults', {
 		type: Object,
 		default: {
-			min: -100, max: 100, step: 1, default: 0, colorize: false,
+			min: -100, max: 100, step: 1, default: 0, colorize: true,
 			tiers: [
 				[-75, MODULE.localize(`TIERS.generic.labels.Infamous`)],
 				[-55, MODULE.localize(`TIERS.generic.labels.Exalted`)],
