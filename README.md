@@ -35,14 +35,24 @@
 ## About The Module
 ![image](https://github.com/mouse0270/kasper/assets/564874/430c22a5-b503-4a07-8f29-e382a2135a4e)
 
-
-
 KASPER is a Karma and Player Evaluation Resource. It was designed to allow Game Masters to easily track players reputations related to NPCs, Factions, Organizations or really anything. Its highly configurable Tiered Ranking system allows you to quickly create and track anything from a players relation to another NPC, to their Rank in individual Factions. If it can be put on a scale from X to Y, than KASPER can track it. 
 
 Here's why you should be using KASPER:
 * If you need to track your groups reputation with NPCs, Factions, Organizations or anything else, KASPER can do it.
 * If you need to track players ranks in Factions, Organizations or anything else, KASPER can do it.
-* If you like Ghosts and want to see a Ghost in your Foundry, KASPER can do it.
+* If you like Ghosts and want to see a Ghost in your Foundry VTT instance, KASPER can do it.
+
+### How to use
+KASPER allows you to create generic items to track using the provided UI, however you can currently Drag Actors or Journal Entries onto the KASPER UI to create a new item. If you drag a folder onto the UI, it will create a new Reputation tracker with each document in the folder. **HOWEVER** It will only work with documents directly in the folder, not subfolders.
+
+You can customize the labels and values used in KASPER by right clicking on the option you want to customize and select configure. Otherwise you can use the default values. Right clicking will also allow you to delete Sections and Factions.
+
+
+#### TODO
+- [ ] Add Option to Select, Create, Export and Import Configuration Templates to allow users to share their KASPER Reputation Configurations
+- [ ] Develop API to allow other modules to interact with KASPER
+- [ ] Allow users to drag and drop items inside the KASPER UI to allow them to sort and reorganize items, currently its sorted by when it was added to kasper
+- [ ] Propbably other stuff I forgot about...
 
 > Please note as of June 13 2023, KASPER was designed in about 2 days. It a working project but has not be thouroughly tested. Please report any bugs you find.
 

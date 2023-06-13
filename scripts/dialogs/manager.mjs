@@ -166,23 +166,31 @@ export class Manager extends VueApplication {
 
 		let targetSection = null;
 		// TODO: Make this Cleaner
-		if (this._vue.store.reputations.length == 0 || target.closest(`section.${MODULE.ID}-faction-container`) == null) {
+		// If type is folder, or there are no reputations, or the target is not in the reputation container, add a new reputation
+		if (type == 'Folder' || this._vue.store.reputations.length == 0 || target.closest(`section.${MODULE.ID}-faction-container`) == null) {
+			// Create new Reputation
 			this._vue.store.reputations.push({
 				"uuid": `${MODULE.ID}.${randomID()}`,
 				"name": document?.folder?.name ?? `${MODULE.localize('reputation.title')} ${this._vue.store.reputations.length + 1}`,
 				"factions": []
 			});
 
+			// Set Target Section
 			targetSection = this._vue.store.reputations[this._vue.store.reputations.length - 1];
+
+		// If the target is the reputation container, add a new faction
 		}else{
+			// Set Target Section
 			targetSection = this._vue.store.reputations.find(rep => rep.uuid == target.closest(`section.${MODULE.ID}-faction-container`)?.id);	
 		}
 
 		// Add Actor to Reputation Tracker
 		if (type == "Folder") {
+			// Update Reputation Document UUID and Name based on Folder
 			targetSection.docUuid = document?.uuid ?? `${MODULE.ID}.${randomID()}`;
 			targetSection.name = document?.name ?? game.i18n.localize('FOLDER.Name');
 			
+			// Loop through doucments and add them to the faction
 			targetSection.factions = (document?.contents ?? document.content)?.map(doc => {
 				return {
 					"uuid": `${MODULE.ID}.${randomID()}`,
@@ -192,6 +200,7 @@ export class Manager extends VueApplication {
 				}
 			});
 		}else {
+			// Add Document to Faction
 			targetSection.factions.push({
 				"uuid": `${MODULE.ID}.${randomID()}`,
 				"docUuid": uuid,
