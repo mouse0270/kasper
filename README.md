@@ -33,7 +33,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Module
-![image](https://github.com/mouse0270/kasper/assets/564874/430c22a5-b503-4a07-8f29-e382a2135a4e)
+![kasper-header](https://github.com/mouse0270/kasper/assets/564874/9e5ecd38-0db3-4a20-bcc8-749b913fb698)
+
 
 KASPER is a Karma and Player Evaluation Resource. It was designed to allow Game Masters to easily track players reputations related to NPCs, Factions, Organizations or really anything. Its highly configurable Tiered Ranking system allows you to quickly create and track anything from a players relation to another NPC, to their Rank in individual Factions. If it can be put on a scale from X to Y, than KASPER can track it. 
 
