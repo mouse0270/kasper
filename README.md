@@ -10,13 +10,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/mouse0270/mouses-module-template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+	<!-- Would like to have an animated Ghost Gif but legally couldn't find one to use -->
+	<a href="https://github.com/mouse0270/kasper">
+		<img src="./assets/logo.gif" alt="Logo" width="128" height="128" />
+	</a>
 
-  <h3 align="center">MODULE-TITLE</h3>
+<h3 align="center">KASPER<h4 align="center">Karma Assessment and Player Evaluation Resource</h4></h3>
 
-  <p align="center">MODULE-DESCRIPTION</p>
+  
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -34,22 +35,21 @@
 ## About The Module
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+KASPER is a Karma and Player Evaluation Resource. It was designed to allow Game Masters to easily track players reputations related to NPCs, Factions, Organizations or really anything. Its highly configurable Tiered Ranking system allows you to quickly create and track anything from a players relation to another NPC, to their Rank in individual Factions. If it can be put on a scale from X to Y, than KASPER can track it. 
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+Here's why you should be using KASPER:
+* If you need to track your groups reputation with NPCs, Factions, Organizations or anything else, KASPER can do it.
+* If you need to track players ranks in Factions, Organizations or anything else, KASPER can do it.
+* If you like Ghosts and want to see a Ghost in your Foundry, KASPER can do it.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+> Please note as of June 13 2023, KASPER was designed in about 2 days. It a working project but has not be thouroughly tested. Please report any bugs you find.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- SUPPORTED MODULES/SYSTEMS -->
 ## Supported Modules / Systems
+None right now, But I'd like to be able to integrate into other modules like FQL so that when you status in a quest changes, you can automate the change in a players reputation with NPCs, Factions, Organizations or anything else
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -66,16 +66,16 @@ Distributed under the MIT License. See [LICENSE]([license-url]) for more informa
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-url]: https://github.com/mouse0270/mouses-module-template/blob/master/LICENSE
+[license-url]: https://github.com/mouse0270/kasper/blob/master/LICENSE
 
-[forge-installs]: https://img.shields.io/badge/dynamic/json?&colorB=90A959&label=Forge%20Installs&query=package.installs&suffix=%25&style=for-the-badge&url=https://forge-vtt.com/api/bazaar/package/mouses-module-template
-[forge-url]: https://forge-vtt.com/bazaar/package/mouses-module-template
+[forge-installs]: https://img.shields.io/badge/dynamic/json?&colorB=90A959&label=Forge%20Installs&query=package.installs&suffix=%25&style=for-the-badge&url=https://forge-vtt.com/api/bazaar/package/kasper
+[forge-url]: https://forge-vtt.com/bazaar/package/kasper
 
-[latest-download]: https://img.shields.io/github/downloads/mouse0270/mouses-module-template/latest/module.zip?color=5D4A66&label=DOWNLOADS&style=for-the-badge
-[latest-download-url]: https://github.com/mouse0270/mouses-module-template/releases/latest
+[latest-download]: https://img.shields.io/github/downloads/mouse0270/kasper/latest/module.zip?color=5D4A66&label=DOWNLOADS&style=for-the-badge
+[latest-download-url]: https://github.com/mouse0270/kasper/releases/latest
 
-[github-starts]: https://img.shields.io/github/stars/mouse0270/mouses-module-template?logo=AddThis&logoColor=white&style=for-the-badge
-[github-url]: https://github.com/mouse0270/mouses-module-template
+[github-starts]: https://img.shields.io/github/stars/mouse0270/kasper?logo=AddThis&logoColor=white&style=for-the-badge
+[github-url]: https://github.com/mouse0270/kasper
 
 [patreon]: https://img.shields.io/badge/-Patreon-FF424D?style=for-the-badge&logo=Patreon&logoColor=white
 [patreon-url]: https://www.patreon.com/mouse0270

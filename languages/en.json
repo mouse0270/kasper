@@ -1,0 +1,141 @@
+{
+	"kasper": {
+		"title": "👻 KASPER",
+		"subtitle": "Karma Assessment and Player Evaluation Resource",
+		"settings": {
+			"minify.name": "Use Minified Look?",
+			"minify.hint": "This will make the UI smaller and more compact. Please be warned that this overlays the reputation label over the colored bar and may be hard to read on some screens.",
+			"trigger": {
+				"name": "Activation Method?",
+				"hint": "How do you want to activate the KASPER UI? Dialog will add a button to the Journal Sidebar Header. Pinned will pin the window above the notes under the Journal Sidebar Tab.",
+				"choices": {
+					"dialog": "Dialog",
+					"pinned": "Pinned"
+				}
+			},
+			"config": {
+				"name": "Configure Global Defaults",
+				"hint": "This is the default values used for all reputation trackers. You can right click and configure individual tracker values in the Manager window.",
+				"label": "Configure Global Defaults"
+			}
+		},
+		"manager": {
+			"title": "Manager",
+			"addFaction": "Add Faction",
+			"decreaseReputation": "Decrease Reputation",
+			"increaseReputation": "Increase Reputation",
+			"dragDrop": {
+				"addReputation": "Add Reputation",
+				"dropHere": "Drop Here"
+			}
+		},
+		"configure": {
+			"title": "Configure",
+			"titles": {
+				"global": "Configure Global Settings",
+				"reputation": "Configure Reputation {title} Settings",
+				"faction": "Configure Faction {title} Settings"
+			},
+			"settings": {
+				"title": "Define Ranges",
+				"override": {
+					"name": "Define Unique Settings",
+					"hint": "This will override the parent settings for this element and its children."
+				},
+				"minimum": {
+					"name": "Lowest Reputation Value",
+					"hint": "This is the lowest value a reputation can be. This is usually the most negative value."
+				},
+				"maximum": {
+					"name": "Highest Reputation Value",
+					"hint": "This is the highest value a reputation can be. This is usually the most positive value."
+				},
+				"default": {
+					"name": "Default Reputation Value",
+					"hint": "This is the default value a reputation will be set to when a new faction is added."
+				},
+				"colorize": {
+					"name": "Colorize Reputation Bar?",
+					"hint": "This will colorize the reputation bar based on the reputation value."
+				}
+			},
+			"tiers": {
+				"title": "Define Tiers",
+				"headingLabel": "Tier Label",
+				"addTierLabel": "Set Tier Label"
+			}
+		},
+		"reputation": {
+			"title": "Reputation Title",
+			"faction": {
+				"title": "Faction Title"
+			}
+		},
+
+		"TIERS": {
+			"house-divided": {
+				"title": "House Divided",
+				"labels": {
+					"Despised": "Despised",
+  					"Scorned": "Scorned",
+					"Unfriendly": "Unfriendly",
+					"Neutral": "Neutral",
+					"Friendly": "Friendly",
+					"Loyal": "Loyal",
+					"Devoted": "Devoted"
+				}
+			}, 
+			"fallout": {
+				"title": "Fallout",
+				"labels": {
+					"VeryGood": "Very Good",
+					"Good": "Good",
+					"Neutral": "Neutral",
+					"Bad": "Bad",
+					"VeryBad": "Very Bad"
+				}
+			},
+			"solider-ranks": {
+				"title": "Solider Ranks",
+				"labels": {
+					"Unlisted": "Unlisted",
+					"Private": "Private",
+					"Corporal": "Corporal",
+					"Sergeant": "Sergeant",
+					"MasterSergeant": "Master Sergeant",
+					"SecondLieutenant": "Second Lieutenant",
+					"FirstLieutenant": "First Lieutenant",
+					"Captain": "Captain",
+					"Major": "Major",
+					"Colonel": "Colonel",
+					"BrigadierGeneral": "Brigadier General",
+					"MajorGeneral": "Major General",
+					"LieutenantGeneral": "Lieutenant General",
+					"General": "General"
+				}
+			},
+			"generic": {
+				"title": "Generic",
+				"labels": {
+					"Infamous": "Infamous",
+					"Exalted": "Exalted",
+					"Hated": "Hated",
+					"Feared": "Feared",
+					"Neutral": "Neutral",
+					"Friendly": "Friendly",
+					"Allied": "Allied",
+					"Respcted": "Respected",
+					"Revered": "Revered"
+				}
+			},
+			"simple": {
+				"title": "Simple",
+				"labels": {
+					"Enemy": "Enemy",
+					"Neutral": "Neutral",
+					"Friendly": "Friendly"
+				}
+			}
+		}
+	}
+}

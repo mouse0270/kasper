@@ -1,0 +1,469 @@
+#kasper-manager, #kasper-configure {
+	--button-background-color: rgba(255, 255, 240, 0.8);
+	--list-background-color: rgba(0, 0, 0, 0.1);
+	--border-radius: 0.25rem;
+}
+
+#kasper-manager {
+	max-width: 315px;
+	min-width: 315px;
+
+	// Personal Preference
+	// Remove the padding from the .window-content class
+	.window-content {
+		padding: 0px;
+
+		.dragover div.action-buttons > button {
+			background-color: transparent;
+    		border-style: dashed;
+		}
+	}
+
+	main {
+		section {
+			margin: 0.5rem;
+
+			header {
+				background-color: var(--button-background-color);
+				border: 1px solid var(--color-border-light-primary);
+				border-bottom: 2px solid var(--color-underline-header);	
+				border-top-left-radius: var(--border-radius);
+				border-top-right-radius: var(--border-radius);
+				display: flex;
+				flex-direction: row;
+
+				h1 {
+					align-self: center;
+					border-width: 0px;
+					flex: 1 0;
+					font-weight: 600;
+					order: 0;
+					margin: 0px;
+					padding: 0.5rem 0.25rem;
+					text-align: center;
+
+					nav#context-menu {
+						font-size: var(--font-size-14);
+						text-align: left;
+					}
+				}
+
+				button[data-action] {
+					background-color: transparent;
+					border-radius: 0px;
+					border-width: 0px;
+					flex: 0 1;
+					font-size: 1.25rem;
+					margin: 0px;
+					padding: 0.5rem;
+
+					i {
+						margin: 0;
+					}
+				}
+				button[data-action="remove-faction"] {
+					border-right: 1px solid var(--color-border-light-primary);
+					order: -1;
+				}
+				button[data-action="add-faction"] {
+					border-left: 1px solid var(--color-border-light-primary);
+					order: 1;
+				}
+			}
+
+			ul {
+				background-color: var(--list-background-color);
+				border: 1px solid var(--color-border-light-primary);
+				border-bottom-left-radius: var(--border-radius);
+				border-bottom-right-radius: var(--border-radius);
+				list-style: none;
+				margin: 0;
+				padding: 0.5rem;
+
+				> li {
+					background-color: var(--button-background-color);
+					border: 1px solid var(--color-border-light-primary);
+					border-radius: var(--border-radius);
+					display: flex;
+					flex-direction: row;
+
+					div.form-group {
+						flex: 1 0;
+						max-width: 205px;
+						padding: 0.5rem 0.5rem 0rem;
+						position: relative;
+						text-align: center;
+
+						label {
+							display: block;
+							font-size: 1.15rem;
+							font-weight: 600;
+							overflow: hidden;
+							text-overflow: ellipsis;
+    						white-space: nowrap;
+						}
+
+						input[type="range"] {
+							margin: auto;
+							-webkit-appearance: none;
+							position: relative;
+							overflow: hidden;
+							height: 16px;
+							width: 100%;
+							cursor: pointer;
+							border-radius: var(--border-radius);
+							border-width: 0px;
+
+							&::-webkit-slider-runnable-track {
+								background: rgba(0, 0, 0, 0.1);
+								border-radius: 0px;
+								border-width: 0px;
+								box-shadow: none;
+								height: 16px;
+							}
+							&::-webkit-slider-thumb {
+								-webkit-appearance: none;
+								width: 16px;
+								height: 16px;
+								background: var(--color-text-hyperlink);
+								box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+								border-width: 0px;
+							}
+						}
+
+						p.notes {
+							font-size: 0.75rem;
+							line-height: 0.75rem;
+							margin: 0;
+						}
+
+						nav#context-menu {
+							font-size: var(--font-size-14);
+							text-align: left;
+						}
+					}
+
+					button[data-action] {
+						background-color: transparent;
+						border-radius: 0px;
+						border-width: 0px;
+						flex: 0 1;
+						font-size: 1.25rem;
+						margin: 0px;
+						padding: 0.5rem;
+	
+						i {
+							margin: 0;
+						}
+					}
+					button[data-action="decrease-reputation"] {
+						border-right: 1px solid var(--color-border-light-primary);
+						order: -1;
+					}
+					button[data-action="increase-reputation"] {
+						border-left: 1px solid var(--color-border-light-primary);
+						order: 1;
+					}
+				}
+
+				> li:not(:last-child) {
+					margin-bottom: 0.25rem;
+				}
+			}
+		}
+		
+		div.action-buttons {
+			padding: 0.5rem;
+
+			button[data-action="add-reputation"] {
+				border-radius: var(--border-radius);
+			}
+		}
+	}
+
+
+}
+#sidebar #kasper-manager,
+#kasper-manager.minify {
+	button {
+		font-size: 1rem !important;
+	}
+
+	main section header {
+		border-bottom-width: 0px;
+
+		h1 {
+			font-size: 1.15rem;
+			line-height: normal;
+		}
+	}
+
+	main section ul {
+		padding: 0;
+
+		li {
+			border-radius: 0;
+			border-width: 0px;
+			border-top-width: 1px;
+			margin: 0px;
+
+			div.form-group {
+				line-height: normal;
+				max-width: none;
+				padding: 0.25rem 0.5rem;
+				position: relative;
+				text-align: left;
+
+				label {
+					font-size: 1rem;
+				}
+				p.notes {
+					pointer-events: none;
+					position: absolute;
+					bottom: 8px;
+					left: 1rem;
+					height: 16px;
+					line-height: 20px;
+				}
+			}
+		}
+		li:last-child {
+			border-bottom-left-radius: var(--border-radius);
+			border-bottom-right-radius: var(--border-radius);
+		}
+	}
+}
+
+#sidebar #kasper-manager {
+	left: auto !important;
+	height: auto !important;
+	min-width: auto;
+	position: relative !important;
+	top: auto !important;
+	width: auto !important;
+
+	background-image: none;
+	box-shadow: none;
+	margin-bottom: -3px;
+
+	header.window-header{
+		background-color: var(--color-border-dark-3);
+		border-bottom: 1px solid var(--color-border-dark);
+		border-top: 1px solid var(--color-border-dark);
+		cursor: default;
+		text-align: left;
+		
+		a {
+			display: none !important;
+		}
+	}
+
+	.window-content {
+		background-image: none;
+		max-height: calc(50vh - 100px);
+
+		color: var(--color-text-light-highlight);
+
+		main section header {
+			background-color: var(--color-border-dark-3);
+			border-color: var(--color-border-dark-1);
+			
+			button[data-action=add-faction] {
+				border-color: var(--color-border-dark-1);
+				color: var(--color-text-light-highlight);
+			}
+		}
+		main section ul {
+			background-color: var(--color-border-dark-3);
+			border-color: var(--color-border-dark-1);
+
+			> li {
+				background-color: var(--color-border-dark-3);
+				border-color: var(--color-border-dark-1);
+				
+				button[data-action=decrease-reputation], button[data-action=increase-reputation] {
+					border-color: var(--color-border-dark-1);
+					color: var(--color-text-light-highlight);
+				}
+			}
+		}
+
+		main div.action-buttons {
+			padding: 0rem 0.5rem;
+			button[data-action=add-reputation] {
+				margin: 0px;
+			}
+		}
+	}
+}
+
+#kasper-configure main {
+	section.preview {
+		margin: 0.5rem;
+
+		ul {
+			background-color: var(--list-background-color);
+			border: 1px solid var(--color-border-light-primary);
+			border-radius: var(--border-radius);
+			list-style: none;
+			margin: 0;
+			padding: 0.5rem;
+
+			> li {
+				background-color: var(--button-background-color);
+				border: 1px solid var(--color-border-light-primary);
+				border-radius: var(--border-radius);
+				display: flex;
+				flex-direction: row;
+
+				div.form-group {
+					flex: 1 0;
+					margin: 0px;
+					max-width: none;
+					padding: 0.5rem 0.5rem 0rem;
+					position: relative;
+					text-align: center;
+
+					label {
+						display: block;
+						flex: auto;
+						font-size: 1.15rem;
+						font-weight: 600;
+						line-height: normal;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						width: 100%;
+					}
+
+					input[type="range"] {
+						flex: auto;
+						margin: auto;
+						-webkit-appearance: none;
+						position: relative;
+						overflow: hidden;
+						height: 16px;
+						width: 100%;
+						cursor: pointer;
+						border-radius: var(--border-radius);
+						border-width: 0px;
+
+						&::-webkit-slider-runnable-track {
+							background: rgba(0, 0, 0, 0.1);
+							border-radius: 0px;
+							border-width: 0px;
+							box-shadow: none;
+							height: 16px;
+						}
+						&::-webkit-slider-thumb {
+							-webkit-appearance: none;
+							width: 16px;
+							height: 16px;
+							background: var(--color-text-hyperlink);
+							box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+							border-width: 0px;
+						}
+					}
+
+					p.notes {
+						font-size: 0.75rem;
+						line-height: 0.75rem;
+						margin: 0;
+					}
+
+					nav#context-menu {
+						font-size: var(--font-size-14);
+						text-align: left;
+					}
+				}
+
+				button[data-action] {
+					background-color: transparent;
+					border-radius: 0px;
+					border-width: 0px;
+					flex: 0 1;
+					font-size: 1.25rem;
+					margin: 0px;
+					padding: 0.5rem;
+
+					i {
+						margin: 0;
+					}
+				}
+				button[data-action="decrease-reputation"] {
+					border-right: 1px solid var(--color-border-light-primary);
+					order: -1;
+				}
+				button[data-action="increase-reputation"] {
+					border-left: 1px solid var(--color-border-light-primary);
+					order: 1;
+				}
+			}
+
+			> li:not(:last-child) {
+				margin-bottom: 0.25rem;
+			}
+		}
+	}
+
+	section.tiers {
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li.header .form-group .form-fields { 
+			input[type="text"] {
+				background: transparent;
+				border-radius: 0px;
+				border-width: 0px;
+				border-bottom: 1px solid var(--color-underline-header);
+				font-weight: bold;
+			}
+
+			input[type="text"]:first-child {
+				flex: 0 1 100px;
+				text-align: center;
+			}
+		}
+
+		li .form-group .form-fields {
+			gap: 0px;
+
+			input[type="number"] {
+				border-radius: var(--border-radius);
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+				flex: 0 1 100px;
+				text-align: center;
+			}
+
+			input[type="text"] {
+				border-radius: 0;
+			}
+
+			button {
+				border-radius: var(--border-radius);
+				border-top-left-radius: 0px;
+				border-bottom-left-radius: 0px;
+				border: 1px solid var(--color-border-light-tertiary);
+				margin: 0px;
+
+				i {
+					margin: 0px;
+				}
+			}
+		}
+
+		li:last-child {
+			border-top: 2px solid var(--color-underline-header);
+			margin-top: 0.5rem;
+    		padding-top: 0.25rem;
+		}
+	}
+
+	footer {
+		padding-top: 8px;
+	}
+}

@@ -1,0 +1,461 @@
+#kasper-manager, #kasper-configure {
+  --button-background-color: rgba(255, 255, 240, 0.8);
+  --list-background-color: rgba(0, 0, 0, 0.1);
+  --border-radius: 0.25rem;
+}
+
+#kasper-manager {
+  max-width: 315px;
+  min-width: 315px;
+}
+#kasper-manager .window-content {
+  padding: 0px;
+}
+#kasper-manager .window-content .dragover div.action-buttons > button {
+  background-color: transparent;
+  border-style: dashed;
+}
+#kasper-manager main section {
+  margin: 0.5rem;
+}
+#kasper-manager main section header {
+  background-color: var(--button-background-color);
+  border: 1px solid var(--color-border-light-primary);
+  border-bottom: 2px solid var(--color-underline-header);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+#kasper-manager main section header h1 {
+  -ms-flex-item-align: center;
+      align-self: center;
+  border-width: 0px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0;
+          flex: 1 0;
+  font-weight: 600;
+  -webkit-box-ordinal-group: 1;
+      -ms-flex-order: 0;
+          order: 0;
+  margin: 0px;
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+}
+#kasper-manager main section header h1 nav#context-menu {
+  font-size: var(--font-size-14);
+  text-align: left;
+}
+#kasper-manager main section header button[data-action] {
+  background-color: transparent;
+  border-radius: 0px;
+  border-width: 0px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1;
+          flex: 0 1;
+  font-size: 1.25rem;
+  margin: 0px;
+  padding: 0.5rem;
+}
+#kasper-manager main section header button[data-action] i {
+  margin: 0;
+}
+#kasper-manager main section header button[data-action=remove-faction] {
+  border-right: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 0;
+      -ms-flex-order: -1;
+          order: -1;
+}
+#kasper-manager main section header button[data-action=add-faction] {
+  border-left: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+#kasper-manager main section ul {
+  background-color: var(--list-background-color);
+  border: 1px solid var(--color-border-light-primary);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+#kasper-manager main section ul > li {
+  background-color: var(--button-background-color);
+  border: 1px solid var(--color-border-light-primary);
+  border-radius: var(--border-radius);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+#kasper-manager main section ul > li div.form-group {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0;
+          flex: 1 0;
+  max-width: 205px;
+  padding: 0.5rem 0.5rem 0rem;
+  position: relative;
+  text-align: center;
+}
+#kasper-manager main section ul > li div.form-group label {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#kasper-manager main section ul > li div.form-group input[type=range] {
+  margin: auto;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  height: 16px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border-width: 0px;
+}
+#kasper-manager main section ul > li div.form-group input[type=range]::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+  border-width: 0px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  height: 16px;
+}
+#kasper-manager main section ul > li div.form-group input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-text-hyperlink);
+  -webkit-box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+          box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+  border-width: 0px;
+}
+#kasper-manager main section ul > li div.form-group p.notes {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  margin: 0;
+}
+#kasper-manager main section ul > li div.form-group nav#context-menu {
+  font-size: var(--font-size-14);
+  text-align: left;
+}
+#kasper-manager main section ul > li button[data-action] {
+  background-color: transparent;
+  border-radius: 0px;
+  border-width: 0px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1;
+          flex: 0 1;
+  font-size: 1.25rem;
+  margin: 0px;
+  padding: 0.5rem;
+}
+#kasper-manager main section ul > li button[data-action] i {
+  margin: 0;
+}
+#kasper-manager main section ul > li button[data-action=decrease-reputation] {
+  border-right: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 0;
+      -ms-flex-order: -1;
+          order: -1;
+}
+#kasper-manager main section ul > li button[data-action=increase-reputation] {
+  border-left: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+#kasper-manager main section ul > li:not(:last-child) {
+  margin-bottom: 0.25rem;
+}
+#kasper-manager main div.action-buttons {
+  padding: 0.5rem;
+}
+#kasper-manager main div.action-buttons button[data-action=add-reputation] {
+  border-radius: var(--border-radius);
+}
+
+#sidebar #kasper-manager button,
+#kasper-manager.minify button {
+  font-size: 1rem !important;
+}
+#sidebar #kasper-manager main section header,
+#kasper-manager.minify main section header {
+  border-bottom-width: 0px;
+}
+#sidebar #kasper-manager main section header h1,
+#kasper-manager.minify main section header h1 {
+  font-size: 1.15rem;
+  line-height: normal;
+}
+#sidebar #kasper-manager main section ul,
+#kasper-manager.minify main section ul {
+  padding: 0;
+}
+#sidebar #kasper-manager main section ul li,
+#kasper-manager.minify main section ul li {
+  border-radius: 0;
+  border-width: 0px;
+  border-top-width: 1px;
+  margin: 0px;
+}
+#sidebar #kasper-manager main section ul li div.form-group,
+#kasper-manager.minify main section ul li div.form-group {
+  line-height: normal;
+  max-width: none;
+  padding: 0.25rem 0.5rem;
+  position: relative;
+  text-align: left;
+}
+#sidebar #kasper-manager main section ul li div.form-group label,
+#kasper-manager.minify main section ul li div.form-group label {
+  font-size: 1rem;
+}
+#sidebar #kasper-manager main section ul li div.form-group p.notes,
+#kasper-manager.minify main section ul li div.form-group p.notes {
+  pointer-events: none;
+  position: absolute;
+  bottom: 8px;
+  left: 1rem;
+  height: 16px;
+  line-height: 20px;
+}
+#sidebar #kasper-manager main section ul li:last-child,
+#kasper-manager.minify main section ul li:last-child {
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+#sidebar #kasper-manager {
+  left: auto !important;
+  height: auto !important;
+  min-width: auto;
+  position: relative !important;
+  top: auto !important;
+  width: auto !important;
+  background-image: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin-bottom: -3px;
+}
+#sidebar #kasper-manager header.window-header {
+  background-color: var(--color-border-dark-3);
+  border-bottom: 1px solid var(--color-border-dark);
+  border-top: 1px solid var(--color-border-dark);
+  cursor: default;
+  text-align: left;
+}
+#sidebar #kasper-manager header.window-header a {
+  display: none !important;
+}
+#sidebar #kasper-manager .window-content {
+  background-image: none;
+  max-height: calc(50vh - 100px);
+  color: var(--color-text-light-highlight);
+}
+#sidebar #kasper-manager .window-content main section header {
+  background-color: var(--color-border-dark-3);
+  border-color: var(--color-border-dark-1);
+}
+#sidebar #kasper-manager .window-content main section header button[data-action=add-faction] {
+  border-color: var(--color-border-dark-1);
+  color: var(--color-text-light-highlight);
+}
+#sidebar #kasper-manager .window-content main section ul {
+  background-color: var(--color-border-dark-3);
+  border-color: var(--color-border-dark-1);
+}
+#sidebar #kasper-manager .window-content main section ul > li {
+  background-color: var(--color-border-dark-3);
+  border-color: var(--color-border-dark-1);
+}
+#sidebar #kasper-manager .window-content main section ul > li button[data-action=decrease-reputation], #sidebar #kasper-manager .window-content main section ul > li button[data-action=increase-reputation] {
+  border-color: var(--color-border-dark-1);
+  color: var(--color-text-light-highlight);
+}
+#sidebar #kasper-manager .window-content main div.action-buttons {
+  padding: 0rem 0.5rem;
+}
+#sidebar #kasper-manager .window-content main div.action-buttons button[data-action=add-reputation] {
+  margin: 0px;
+}
+
+#kasper-configure main section.preview {
+  margin: 0.5rem;
+}
+#kasper-configure main section.preview ul {
+  background-color: var(--list-background-color);
+  border: 1px solid var(--color-border-light-primary);
+  border-radius: var(--border-radius);
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+#kasper-configure main section.preview ul > li {
+  background-color: var(--button-background-color);
+  border: 1px solid var(--color-border-light-primary);
+  border-radius: var(--border-radius);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+#kasper-configure main section.preview ul > li div.form-group {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0;
+          flex: 1 0;
+  margin: 0px;
+  max-width: none;
+  padding: 0.5rem 0.5rem 0rem;
+  position: relative;
+  text-align: center;
+}
+#kasper-configure main section.preview ul > li div.form-group label {
+  display: block;
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+#kasper-configure main section.preview ul > li div.form-group input[type=range] {
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+  margin: auto;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  height: 16px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border-width: 0px;
+}
+#kasper-configure main section.preview ul > li div.form-group input[type=range]::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+  border-width: 0px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  height: 16px;
+}
+#kasper-configure main section.preview ul > li div.form-group input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-text-hyperlink);
+  -webkit-box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+          box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+  border-width: 0px;
+}
+#kasper-configure main section.preview ul > li div.form-group p.notes {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  margin: 0;
+}
+#kasper-configure main section.preview ul > li div.form-group nav#context-menu {
+  font-size: var(--font-size-14);
+  text-align: left;
+}
+#kasper-configure main section.preview ul > li button[data-action] {
+  background-color: transparent;
+  border-radius: 0px;
+  border-width: 0px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1;
+          flex: 0 1;
+  font-size: 1.25rem;
+  margin: 0px;
+  padding: 0.5rem;
+}
+#kasper-configure main section.preview ul > li button[data-action] i {
+  margin: 0;
+}
+#kasper-configure main section.preview ul > li button[data-action=decrease-reputation] {
+  border-right: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 0;
+      -ms-flex-order: -1;
+          order: -1;
+}
+#kasper-configure main section.preview ul > li button[data-action=increase-reputation] {
+  border-left: 1px solid var(--color-border-light-primary);
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+#kasper-configure main section.preview ul > li:not(:last-child) {
+  margin-bottom: 0.25rem;
+}
+#kasper-configure main section.tiers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#kasper-configure main section.tiers li.header .form-group .form-fields input[type=text] {
+  background: transparent;
+  border-radius: 0px;
+  border-width: 0px;
+  border-bottom: 1px solid var(--color-underline-header);
+  font-weight: bold;
+}
+#kasper-configure main section.tiers li.header .form-group .form-fields input[type=text]:first-child {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 100px;
+          flex: 0 1 100px;
+  text-align: center;
+}
+#kasper-configure main section.tiers li .form-group .form-fields {
+  gap: 0px;
+}
+#kasper-configure main section.tiers li .form-group .form-fields input[type=number] {
+  border-radius: var(--border-radius);
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 100px;
+          flex: 0 1 100px;
+  text-align: center;
+}
+#kasper-configure main section.tiers li .form-group .form-fields input[type=text] {
+  border-radius: 0;
+}
+#kasper-configure main section.tiers li .form-group .form-fields button {
+  border-radius: var(--border-radius);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border: 1px solid var(--color-border-light-tertiary);
+  margin: 0px;
+}
+#kasper-configure main section.tiers li .form-group .form-fields button i {
+  margin: 0px;
+}
+#kasper-configure main section.tiers li:last-child {
+  border-top: 2px solid var(--color-underline-header);
+  margin-top: 0.5rem;
+  padding-top: 0.25rem;
+}
+#kasper-configure main footer {
+  padding-top: 8px;
+}

@@ -1,12 +1,11 @@
 {
-	"id": "module-template",
-	"title": "MODULE TITLE",
-	"description": "MODULE DESCRIPTION",
+	"id": "kasper",
+	"title": "👻 KASPER | Karma Assessment and Player Evaluation Resource",
+	"description": "This module is desgined to track players Karam or Reputation to factions or npcs or really anything you want to track.",
 	"version": "1.0.0",
 	"compatibility": {
 		"minimum": 10,
-		"verified": 10,
-		"maximum": 10
+		"verified": 11
 	},
 	"authors": [
 		{
@@ -26,12 +25,17 @@
 	],
 
 	"library": false,
-	"socket": false,
+	"socket": true,
 
 	"relationships": {
 		"systems": [],
 		"requires": [],
-		"conflicts": []
+		"recommneds": [],
+		"optional": [],
+		"conflicts": [],
+		"flags": {
+			"optional": []
+		}
 	},
 	"esmodules": [
         "/scripts/init.mjs"
@@ -47,7 +51,13 @@
 			"path": "languages/en.json"
 		}
 	],
-	"media": [],
+	"media": [
+		{
+		  "type": "setup",
+		  "url": "modules/kasper/assets/logo.gif",
+		  "thumbnail": "modules/kasper/assets/logo.gif"
+		}
+	],
 	"url": "This is auto replaced",
 	"manifest": "This is auto replaced",
 	"download": "This is auto replaced",

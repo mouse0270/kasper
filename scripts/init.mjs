@@ -2,30 +2,16 @@
 import { MODULE } from './_module.mjs';
 
 // GET CORE MODULE
-import * as CORE from './module.mjs';
+import { default as CORE } from './module.mjs';
+
+import { Configure } from './dialogs/configure.mjs';
 
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 // socketlib HOOKS -> socketlib.ready
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 Hooks.once('socketlib.ready', () => {
-	MODULE.debug('SOCKETLIB Ready - SOCKET'); // WONT REGISTER CAUSE CALL HAPPENS WAY TO EARLY
+	MODULE.log('debug', 'SOCKETLIB Ready - SOCKET'); // WONT REGISTER CAUSE CALL HAPPENS WAY TO EARLY
 	CORE.registerSocketLib();
-});
-
-/* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
-// 🧙 DEVELOPER MODE HOOKS -> devModeReady
-/* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
-Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
-    registerPackageDebugFlag(MODULE.ID, 'level', {
-		choiceLabelOverrides: {
-			0: 'NONE',
-			1: 'ERROR',
-			2: 'WARN',
-			3: 'DEBUG',
-			4: 'INFO',
-			5: 'ALL'
-		}
-	});
 });
 
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
@@ -34,10 +20,18 @@ Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
 Hooks.once('init', async () => {
 	CORE.init();
 });
-Hooks.once('ready', async () => {
-	
-});
+Hooks.once('ready', async () => {});
 
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 // FOUNDRY HOOKS -> MODULE FUNCTIONS
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
+// Update Actor if Actor is updated outside of Reputation Tracker
+Hooks.on('updateActor', CORE.updateItem);
+Hooks.on('deleteActor', CORE.deleteItem);
+
+// Update Journal if Journal is updated outside of Reputation Tracker
+Hooks.on('updateJournalEntry', CORE.updateItem);
+Hooks.on('deleteJournalEntry', CORE.deleteItem);
+
+// Add Button || Pin to Journal Tab
+Hooks.on('renderSidebarTab', CORE.renderSidebarTab);
