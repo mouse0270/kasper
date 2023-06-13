@@ -4,8 +4,6 @@ import { MODULE } from './_module.mjs';
 // GET CORE MODULE
 import { default as CORE } from './module.mjs';
 
-import { Configure } from './dialogs/configure.mjs';
-
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 // socketlib HOOKS -> socketlib.ready
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
