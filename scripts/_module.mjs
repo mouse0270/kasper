@@ -2,14 +2,14 @@
 // Not using because rollup imports the file in a really weird way
 // It imports each property as its own variable then creates a variable called PACKAGE
 // With all of those variables as an object
-import PACKAGE from '../module.json' assert { type: 'json' };
+//import PACKAGE from '../module.json' assert { type: 'json' };
 
 export class MODULE {
 	// Get Package ID
-	static ID = PACKAGE.id;
+	static ID = 'kasper';
 
 	// Get Localized Title, Defaults to English if i18n is not ready
-	static TITLE = PACKAGE.title || PACKAGE.id;
+	static TITLE = "👻 KASPER | Karma Assessment and Player Evaluation Resource";
 
 	// Set Package Options
 	static OPTIONS = {
