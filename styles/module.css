@@ -59,6 +59,11 @@
   padding: 0.5rem 0.25rem;
   text-align: center;
 }
+#kasper-manager main section header h1[contenteditable=true]:focus-visible {
+  outline: none;
+  -webkit-box-shadow: 0 0 5px var(--color-shadow-primary);
+          box-shadow: 0 0 5px var(--color-shadow-primary);
+}
 #kasper-manager main section header h1 nav#context-menu {
   font-size: var(--font-size-14);
   text-align: left;
@@ -124,6 +129,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+#kasper-manager main section ul > li div.form-group label[contenteditable=true]:focus-visible {
+  outline: none;
+  -webkit-box-shadow: 0 0 5px var(--color-shadow-primary);
+          box-shadow: 0 0 5px var(--color-shadow-primary);
+}
 #kasper-manager main section ul > li div.form-group input[type=range] {
   margin: auto;
   -webkit-appearance: none;
@@ -134,6 +144,7 @@
   cursor: pointer;
   border-radius: var(--border-radius);
   border-width: 0px;
+  /* Foundry doesn't have a foucs-visible state for input range */
 }
 #kasper-manager main section ul > li div.form-group input[type=range]::-webkit-slider-runnable-track {
   background: rgba(0, 0, 0, 0.1);
@@ -151,6 +162,10 @@
   -webkit-box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
           box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
   border-width: 0px;
+}
+#kasper-manager main section ul > li div.form-group input[type=range]:focus-visible {
+  -webkit-box-shadow: 0 0 5px var(--color-shadow-primary);
+          box-shadow: 0 0 5px var(--color-shadow-primary);
 }
 #kasper-manager main section ul > li div.form-group p.notes {
   font-size: 0.75rem;

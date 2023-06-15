@@ -55,6 +55,11 @@
 					padding: 0.5rem 0.25rem;
 					text-align: center;
 
+					&[contenteditable="true"]:focus-visible {
+						outline: none;
+						box-shadow: 0 0 5px var(--color-shadow-primary);
+					}
+
 					nav#context-menu {
 						font-size: var(--font-size-14);
 						text-align: left;
@@ -114,6 +119,11 @@
 							overflow: hidden;
 							text-overflow: ellipsis;
     						white-space: nowrap;
+
+							&[contenteditable="true"]:focus-visible {
+								outline: none;
+								box-shadow: 0 0 5px var(--color-shadow-primary);
+							}
 						}
 
 						input[type="range"] {
@@ -141,6 +151,11 @@
 								background: var(--color-text-hyperlink);
 								box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
 								border-width: 0px;
+							}
+
+							/* Foundry doesn't have a foucs-visible state for input range */
+							&:focus-visible {
+								box-shadow: 0 0 5px var(--color-shadow-primary);
 							}
 						}
 

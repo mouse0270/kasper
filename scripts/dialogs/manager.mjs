@@ -27,7 +27,7 @@ export class Manager extends VueApplication {
 		});
 	}
 
-	getSettings(reputation, faction) {
+	getSettings(reputation = null, faction = null) {
 		return mergeObject(MODULE.setting('globalDefaults'), mergeObject(reputation?.settings ?? {}, faction?.settings ?? {}, { inplace: false }), { inplace: false });
 	}
 
@@ -90,6 +90,19 @@ export class Manager extends VueApplication {
 					"name": MODULE.localize('reputation.title'),
 					"factions": []	
 				});
+			},
+			onContentEditableKeydown: (event, reputation, store) => {
+				if (event.key == 'Enter') {
+					event.preventDefault();
+					event.stopPropagation();
+					event.target.blur();
+
+					if (event.target.parentElement.nodeName == 'HEADER') {
+						event.target.parentElement.querySelector(`button:last-child`).focus();
+					}else if (event.target.parentElement.classList.contains('form-group')) {
+						event.target.parentElement.querySelector(`input[type="range"]`).focus();
+					}
+				}
 			},
 			onRepuationNameChange: this._onRepuationNameChange,
 			onReputationChange: this._onReputationChange,
@@ -161,11 +174,14 @@ export class Manager extends VueApplication {
 	}
 
 	async _addFaction(reputation, store) {
+		// Get Settings Global or for Reputation
+		let settings = this.getSettings(store.reputations.find(rep => rep.uuid == reputation.uuid) ?? {});
+
 		// Add Faction to Reputation Tracker
 		store.reputations.find(rep => rep.uuid == reputation.uuid).factions.push({
 			"uuid": `${MODULE.ID}.${randomID()}`,
 			"name": MODULE.localize('reputation.faction.title'),
-			"reputation": 0
+			"reputation": settings.default
 		});
 
 		// Save to Storage
@@ -192,6 +208,7 @@ export class Manager extends VueApplication {
 	}
 
 	async _onDrop(event) {
+		// Get Properties from Event
         const { target } = event;
         const eventData = TextEditor.getDragEventData(event);
 		const { type, uuid } = eventData;
@@ -207,48 +224,41 @@ export class Manager extends VueApplication {
 		// If Folder does not Container Support Types, Exit
 		if (type == 'Folder' && !supportedTypes.includes(document.type)) return;
 
-		let targetSection = null;
+		// Define Variables used for Adding Reputation
+		let targetSection = target.closest(`section.${MODULE.ID}-faction-container`)?.id ?? null;
+		// Get Settings Global or for Reputation
+		let settings = this.getSettings(this._vue.store.reputations.find(rep => rep.uuid == targetSection) ?? {});
+		// Set Default Data Structure for Reputation
 		let data = {
 			"uuid": `${MODULE.ID}.${randomID()}`,
-			"factions": []
+			"docUuid": document?.uuid ?? `${MODULE.ID}.${randomID()}`,
+			"name": document?.name ?? `${MODULE.localize('reputation.title')} ${this._vue.store.reputations.length + 1}`,
+			"factions": [{
+				"uuid": `${MODULE.ID}.${randomID()}`,
+				"docUuid": uuid ?? `${MODULE.ID}.${randomID()}`,
+				"name": document?.name ?? MODULE.localize('reputation.faction.title'),
+				"reputation": settings.default
+			}]
 		};
 
-		// If type is folder, or there are no reputations, or the target is not in the reputation container, add a new reputation
-		if (type == 'Folder' || this._vue.store.reputations.length == 0 || target.closest(`section.${MODULE.ID}-faction-container`) == null) {
-			// Set Data Name
-			data.name = document?.folder?.name ?? `${MODULE.localize('reputation.title')} ${this._vue.store.reputations.length + 1}`;
 
-		// If the target is the reputation container, add a new faction
-		}else{
-			// Set Target Section
-			targetSection = target.closest(`section.${MODULE.ID}-faction-container`)?.id ?? null;	
-		}
+		// If type is folder or journal entry
+		if (type == 'Folder' || (type == 'JournalEntry' && targetSection == null)) {
+			// Set Target Section to Reputation Container to Null to add a new reputation tracker
+			targetSection = null;
 
-		// Add Actor to Reputation Tracker
-		if (type == "Folder") {
-			// Update Reputation Document UUID and Name based on Folder
-			data.docUuid = document?.uuid ?? `${MODULE.ID}.${randomID()}`;
-			data.name = document?.name ?? game.i18n.localize('FOLDER.Name');
-			
-			// Loop through doucments and add them to the faction
-			data.factions = (document?.contents ?? document.content)?.map(doc => {
+			// Add Factions to Reputation Tracker from contents, content or pages
+			data.factions = (document?.contents ?? document?.content ?? document?.pages ?? []).map(doc => {
 				return {
 					"uuid": `${MODULE.ID}.${randomID()}`,
-					"docUuid": doc.uuid,
-					"name": doc.name,
-					"reputation": 0
+					"docUuid": doc?.uuid ?? `${MODULE.ID}.${randomID()}`,
+					"name": doc?.name ?? 'Unknown',
+					"reputation": settings.default
 				}
-			});
-		}else {
-			// Add Document to Faction
-			data.factions.push({
-				"uuid": `${MODULE.ID}.${randomID()}`,
-				"docUuid": uuid,
-				"name": document?.name ?? MODULE.localize('reputation.faction.title'),
-				"reputation": 0
 			});
 		}
 
+		// Add Reputation to Tracker
 		this._addReputation(data, targetSection);
     }
 	
