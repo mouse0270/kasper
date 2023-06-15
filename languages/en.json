@@ -21,6 +21,7 @@
 		},
 		"manager": {
 			"title": "Manager",
+			"sortable": "Drag to Sort",
 			"addFaction": "Add Faction",
 			"decreaseReputation": "Decrease Reputation",
 			"increaseReputation": "Increase Reputation",

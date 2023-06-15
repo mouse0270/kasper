@@ -20,8 +20,21 @@
 	}
 
 	main {
+		.sortablejs-reputation:not(:has(> section)) {
+			background: transparent url(../assets/logo.gif) no-repeat center center;
+			background-origin: content-box;
+			background-size: contain;
+			min-height: 315px;
+			opacity: 0.5;
+			padding: 3rem;
+		}
+
 		section {
 			margin: 0.5rem;
+
+			[data-action="sortable"] {
+				cursor: grab;
+			}
 
 			header {
 				background-color: var(--button-background-color);
@@ -52,16 +65,17 @@
 					background-color: transparent;
 					border-radius: 0px;
 					border-width: 0px;
-					flex: 0 1;
-					font-size: 1.25rem;
+					flex: 0 1 30px;
+					font-size: 1rem;
 					margin: 0px;
-					padding: 0.5rem;
+					min-width: 30px;
+					padding: 0rem;
 
 					i {
 						margin: 0;
 					}
 				}
-				button[data-action="remove-faction"] {
+				button[data-action="sortable"] {
 					border-right: 1px solid var(--color-border-light-primary);
 					order: -1;
 				}
@@ -85,11 +99,10 @@
 					border: 1px solid var(--color-border-light-primary);
 					border-radius: var(--border-radius);
 					display: flex;
-					flex-direction: row;
 
 					div.form-group {
-						flex: 1 0;
-						max-width: 205px;
+						flex-grow: 1;
+						overflow: hidden;
 						padding: 0.5rem 0.5rem 0rem;
 						position: relative;
 						text-align: center;
@@ -147,14 +160,20 @@
 						background-color: transparent;
 						border-radius: 0px;
 						border-width: 0px;
-						flex: 0 1;
-						font-size: 1.25rem;
+						flex: 0 0 30px;
+						font-size: 1rem;
+						min-width: 30px;
 						margin: 0px;
-						padding: 0.5rem;
+						max-width: 30px;
+						padding: 0rem;
 	
 						i {
 							margin: 0;
 						}
+					}
+					button[data-action="sortable"] {
+						border-right: 1px solid var(--color-border-light-primary);
+						order: -2;
 					}
 					button[data-action="decrease-reputation"] {
 						border-right: 1px solid var(--color-border-light-primary);

@@ -1,5 +1,6 @@
 // GET REQUIRED LIBRARIES
 import { VueApplication } from '../lib/fvtt-petite-vue.mjs';
+import Sortable from '../lib/sortable.core.esm.js';
 
 // GET MODULE CORE
 import { MODULE } from '../_module.mjs';
@@ -77,21 +78,63 @@ export class Manager extends VueApplication {
 			},
 			getSettings: (reputation, faction) => this.getSettings(reputation, faction),
 			addReputation: () => {
-				this._vue.store.reputations.push({
+				/*this._vue.store.reputations.push({
 					"uuid": `${MODULE.ID}.${randomID()}`,	
 					"name": MODULE.localize('reputation.title'),
 					"factions": []	
 				});
 
-				setTimeout(() => {
-					this.setPosition({ height: 'auto' });
-				}, 1);
+				setTimeout(() => { this.setPosition({ height: 'auto' }); }, 1);*/
+				this._addReputation({
+					"uuid": `${MODULE.ID}.${randomID()}`,	
+					"name": MODULE.localize('reputation.title'),
+					"factions": []	
+				});
 			},
 			onRepuationNameChange: this._onRepuationNameChange,
 			onReputationChange: this._onReputationChange,
 			onFactionNameChange: this._onFactionNameChange,
 			addFaction: this._addFaction,
 		};	
+	}
+
+	_addReputation = async (data, target = null) => {
+		MODULE.debug('Adding Reputation', data, target, this._vue.store.reputations);
+
+		// If target is null, add to end of list
+		// TODO: Determine if item should be dropped between existing factions
+		if (target == null) this._vue.store.reputations.push(data);
+		else this._vue.store.reputations.find(rep => rep.uuid == target).factions.push(...(data?.factions ?? []));
+
+		setTimeout(() => { 
+			// Update SortableJS
+			if (target == null) {
+				MODULE.log(document.querySelector(`#${MODULE.ID}-manager .window-content main div.sortablejs-reputation section:last-child ul`))
+				new Sortable(document.querySelector(`#${MODULE.ID}-manager .window-content main div.sortablejs-reputation section:last-child ul`), {
+					group: 'faction',
+					handle: '[data-action="sortable"]', // handle's class
+					// Changed sorting within list
+					onEnd: (event) => {
+						// Get Reputation UUIDs
+						const sourceRepuation = event.from.closest('section').id;
+						const targetReputation = event.to.closest('section').id;
+						// Get Reputation Arrays
+						const sourceReputationArray = this._vue.store.reputations.find(rep => rep.uuid == sourceRepuation).factions;
+						const targetReputationArray = this._vue.store.reputations.find(rep => rep.uuid == targetReputation).factions;
+	
+						// Get Moved Item
+						const item = sourceReputationArray.splice(event.oldIndex, 1)[0];
+						// Update Reputation Array
+						targetReputationArray.splice(event.newIndex, 0, item);
+						// Save to Storage
+						MODULE.setting('storage', this._vue.store.reputations);
+					}
+				});
+			}
+
+			MODULE.setting('storage', this._vue.store.reputations);
+			this.setPosition({ height: 'auto' }); 
+		}, 1);
 	}
 
 	async _onRepuationNameChange(reputation, event, store) {
@@ -150,8 +193,8 @@ export class Manager extends VueApplication {
 
 	async _onDrop(event) {
         const { target } = event;
-        const data = TextEditor.getDragEventData(event);
-		const { type, uuid } = data;
+        const eventData = TextEditor.getDragEventData(event);
+		const { type, uuid } = eventData;
 		const supportedTypes = ["Folder", "Actor", "JournalEntry"];
 		const restrictTypes = true;
 
@@ -165,33 +208,30 @@ export class Manager extends VueApplication {
 		if (type == 'Folder' && !supportedTypes.includes(document.type)) return;
 
 		let targetSection = null;
-		// TODO: Make this Cleaner
+		let data = {
+			"uuid": `${MODULE.ID}.${randomID()}`,
+			"factions": []
+		};
+
 		// If type is folder, or there are no reputations, or the target is not in the reputation container, add a new reputation
 		if (type == 'Folder' || this._vue.store.reputations.length == 0 || target.closest(`section.${MODULE.ID}-faction-container`) == null) {
-			// Create new Reputation
-			this._vue.store.reputations.push({
-				"uuid": `${MODULE.ID}.${randomID()}`,
-				"name": document?.folder?.name ?? `${MODULE.localize('reputation.title')} ${this._vue.store.reputations.length + 1}`,
-				"factions": []
-			});
-
-			// Set Target Section
-			targetSection = this._vue.store.reputations[this._vue.store.reputations.length - 1];
+			// Set Data Name
+			data.name = document?.folder?.name ?? `${MODULE.localize('reputation.title')} ${this._vue.store.reputations.length + 1}`;
 
 		// If the target is the reputation container, add a new faction
 		}else{
 			// Set Target Section
-			targetSection = this._vue.store.reputations.find(rep => rep.uuid == target.closest(`section.${MODULE.ID}-faction-container`)?.id);	
+			targetSection = target.closest(`section.${MODULE.ID}-faction-container`)?.id ?? null;	
 		}
 
 		// Add Actor to Reputation Tracker
 		if (type == "Folder") {
 			// Update Reputation Document UUID and Name based on Folder
-			targetSection.docUuid = document?.uuid ?? `${MODULE.ID}.${randomID()}`;
-			targetSection.name = document?.name ?? game.i18n.localize('FOLDER.Name');
+			data.docUuid = document?.uuid ?? `${MODULE.ID}.${randomID()}`;
+			data.name = document?.name ?? game.i18n.localize('FOLDER.Name');
 			
 			// Loop through doucments and add them to the faction
-			targetSection.factions = (document?.contents ?? document.content)?.map(doc => {
+			data.factions = (document?.contents ?? document.content)?.map(doc => {
 				return {
 					"uuid": `${MODULE.ID}.${randomID()}`,
 					"docUuid": doc.uuid,
@@ -201,7 +241,7 @@ export class Manager extends VueApplication {
 			});
 		}else {
 			// Add Document to Faction
-			targetSection.factions.push({
+			data.factions.push({
 				"uuid": `${MODULE.ID}.${randomID()}`,
 				"docUuid": uuid,
 				"name": document?.name ?? MODULE.localize('reputation.faction.title'),
@@ -209,10 +249,7 @@ export class Manager extends VueApplication {
 			});
 		}
 
-		setTimeout(() => {	
-			MODULE.setting('storage', this._vue.store.reputations);
-			this.setPosition({ height: 'auto' });
-		}, 1);
+		this._addReputation(data, targetSection);
     }
 	
 	activateListeners(html) {
@@ -238,7 +275,7 @@ export class Manager extends VueApplication {
 		elem.addEventListener('dragleave', ev => dragDrop(false));
 
 		// Add Context Options for Section Headers
-		new ContextMenu(html, 'h1[contenteditable]', [{
+		new ContextMenu(html, 'header', [{
 			name: game.i18n.localize('Configure'),
 			icon: '<i class="fa-regular fa-sliders"></i>',
 			condition: game.user.isGM,
@@ -273,7 +310,7 @@ export class Manager extends VueApplication {
 		}]);
 
 		// Add Context Options for Factions
-		new ContextMenu(html, 'ul li div.form-group', [{
+		new ContextMenu(html, 'ul li', [{
 			name: game.i18n.localize('Configure'),
 			icon: '<i class="fa-regular fa-sliders"></i>',
 			condition: game.user.isGM,
@@ -311,6 +348,57 @@ export class Manager extends VueApplication {
 		if (MODULE.setting('trigger') == 'pinned' && document.querySelector('#sidebar #journal')) {
 			document.querySelector('#sidebar #journal > header').insertAdjacentElement('beforeend', document.querySelector(`#${MODULE.ID}-manager`));
 		}
+
+		// Move Item in Array by Index to New Index
+		const moveItem = (array, from, to) => {
+			// If New Index is Equal to Old Index, Return Array
+			if (to == from) return array;
+
+			// Create New Array
+			const newArray = [...array];
+			// Move Item to New Index
+			newArray.splice(to, 0, newArray.splice(from, 1)[0]);
+			// Return New Array
+			return newArray;
+		}
+
+		// Enable Sortable 
+		var sortableReputation = new Sortable(elem.querySelector('.sortablejs-reputation'), {
+			handle: '[data-action="sortable"]', // handle's class
+			// Changed sorting within list
+			onEnd: (event) => {
+				// Get Moved Item
+				const item = this._vue.store.reputations.splice(event.oldIndex, 1)[0];
+				// Update Reputation Array
+				this._vue.store.reputations.splice(event.newIndex, 0, item);
+				// Save to Storage
+				MODULE.setting('storage', this._vue.store.reputations);
+			}
+		});
+
+		// Enable Sortable 
+		elem.querySelectorAll('.sortablejs-reputation ul').forEach((sortableFaction, index) => {
+			new Sortable(sortableFaction, {
+				group: 'faction',
+				handle: '[data-action="sortable"]', // handle's class
+				// Changed sorting within list
+				onEnd: (event) => {
+					// Get Reputation UUIDs
+					const sourceRepuation = event.from.closest('section').id;
+					const targetReputation = event.to.closest('section').id;
+					// Get Reputation Arrays
+					const sourceReputationArray = this._vue.store.reputations.find(rep => rep.uuid == sourceRepuation).factions;
+					const targetReputationArray = this._vue.store.reputations.find(rep => rep.uuid == targetReputation).factions;
+
+					// Get Moved Item
+					const item = sourceReputationArray.splice(event.oldIndex, 1)[0];
+					// Update Reputation Array
+					targetReputationArray.splice(event.newIndex, 0, item);
+					// Save to Storage
+					MODULE.setting('storage', this._vue.store.reputations);
+				}
+			});
+		});
 
         //this.render();
         this.setPosition({ height: 'auto' });

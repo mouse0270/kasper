@@ -52,7 +52,6 @@ You can customize the labels and values used in KASPER by right clicking on the 
 #### TODO
 - [ ] Add Option to Select, Create, Export and Import Configuration Templates to allow users to share their KASPER Reputation Configurations
 - [ ] Develop API to allow other modules to interact with KASPER
-- [ ] Allow users to drag and drop items inside the KASPER UI to allow them to sort and reorganize items, currently its sorted by when it was added to kasper
 - [ ] Propbably other stuff I forgot about...
 
 > Please note as of June 13 2023, KASPER was designed in about 2 days. It a working project but has not be thouroughly tested. Please report any bugs you find.

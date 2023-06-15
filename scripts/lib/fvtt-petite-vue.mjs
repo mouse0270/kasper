@@ -134,7 +134,6 @@ export class VueFormApplication extends FormApplication {
         return $(divElement.firstChild)
     }
     async _activateCoreListeners(formElements) {
-        console.log('_VUE_', this);
         if (super._activateCoreListeners(formElements), this.options.autoSync && this.object?.update)
             for (let schemaField of Object.values(this.object.schema.fields)) {
                 if (!schemaField?.element?.documentName) continue;
