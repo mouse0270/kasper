@@ -43,7 +43,7 @@ Elevate your gaming experience with KASPER's highly configurable Tiered Ranking 
 
 Here's why you should be using KASPER:
 * Streamlined Reputation Tracking: Say goodbye to manual note-taking and tedious spreadsheets. KASPER streamlines the process, allowing you to easily record and manage player reputations across multiple entities.
-* Streamlined Reputation Tracking: Say goodbye to manual note-taking and tedious spreadsheets. KASPER streamlines the process, allowing you to easily record and manage player reputations across multiple entities.
+* Unleash Your Creativity: With KASPER's flexible configuration options, you have the freedom to tailor the system to your specific game world. Create unique scales and rankings that align with the intricacies of your narrative.
 * *Ghostly Encounters: If you're a fan of the supernatural and yearn for ghostly encounters in your Foundry VTT instance, KASPER has you covered. Harnessing its mystical powers, KASPER can conjure ethereal spirits and weave them seamlessly into your gaming sessions. Get ready for spine-tingling adventures like never before!*
 
 Unlock the true potential of player evaluation and enhance the depth of your storytelling with KASPER. Say goodbye to ambiguity and hello to precise tracking, empowering you to create unforgettable gaming experiences. Get started today and witness the transformative power of KASPER!

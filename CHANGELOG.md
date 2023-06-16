@@ -1,3 +1,5 @@
+# Version 1.0.1
+- Fixed a duplicate line in the Readme.md file
 # Version 1.0.0 - A Wild Ghost Appears, and so does KASPER
 Introducing KASPER: The Ultimate Karma and Player Evaluation Resource
 
