@@ -490,7 +490,7 @@
 			}
 		}
 
-		li:last-child {
+		li:not([data-tier]) {
 			border-top: 2px solid var(--color-underline-header);
 			margin-top: 0.5rem;
     		padding-top: 0.25rem;

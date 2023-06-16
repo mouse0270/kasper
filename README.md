@@ -53,6 +53,8 @@ You can customize the labels and values used in KASPER by right clicking on the 
 - [ ] Add Option to Select, Create, Export and Import Configuration Templates to allow users to share their KASPER Reputation Configurations
 - [ ] Develop API to allow other modules to interact with KASPER
 - [ ] Add Keyboard Accessible Support for Sorting items
+- [ ] Provide a visual indicator that Section or Faction is linked to a document in Foundry.
+  - Currently linked documents are only distinguished by the fact that their titles can not be edited within KASPER
 - [ ] Propbably other stuff I forgot about...
 
 > Please note as of June 13 2023, KASPER was designed in about 2 days. It a working project but has not be thouroughly tested. Please report any bugs you find.

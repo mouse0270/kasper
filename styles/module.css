@@ -483,7 +483,7 @@
 #kasper-configure main section.tiers li .form-group .form-fields button i {
   margin: 0px;
 }
-#kasper-configure main section.tiers li:last-child {
+#kasper-configure main section.tiers li:not([data-tier]) {
   border-top: 2px solid var(--color-underline-header);
   margin-top: 0.5rem;
   padding-top: 0.25rem;

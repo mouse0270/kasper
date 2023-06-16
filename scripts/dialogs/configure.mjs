@@ -21,44 +21,56 @@ export class Configure extends VueFormApplication {
 		});
 	}
 
+	static getSettings(setting) {
+		let presets = MODULE.setting('presets');
+		let settings = mergeObject(presets.find(preset => preset.key === setting?.preset ?? 'globalDefaults')?.settings ?? {}, setting ?? {}, { inplace: false });
+
+		return settings;
+	}
+
 	static getConditions(faction) {
 		// Sort Tiers from Lowers to Heighest
 		const sortTiers = (tiers) => tiers.sort((a, b) => a[0] - b[0]);
 
+		// If faction does not have a preset or tiers, assume it is global
+		if (!(faction?.preset ?? false) && !(faction?.tiers ?? false)) faction = null;
+
+		// Get Settings
+		let settings = Configure.getSettings(faction);
+
 		// Get Conditions from Global => Reputation => Faction
 		// Then Sort Tiers from Lowest to Heights
-		let conditions = faction;
-		conditions.tiers = sortTiers(faction.tiers);
+		settings.tiers = sortTiers(settings?.tiers ?? []);
 
-		// Correct min and max values
-		//if (conditions.min > conditions.tiers[0][0]) conditions.min = conditions.tiers[0][0];
-		//if (conditions.max < conditions.tiers[conditions.tiers.length - 1][0]) conditions.max = conditions.tiers[conditions.tiers.length - 1][0];
-
-		return conditions;
+		return settings;
 	}
 
 	async getData() {
 		// Get Settings Defaults
-		let defaults = MODULE.setting('globalDefaults');
+		let defaults = Configure.getSettings({ preset: 'globalDefaults' });
 		let hasSettings = false;
 		
 		// If Reputation is set, get reputation defaults and merge with global defaults
 		if ((this?.object?.reputationUuid ?? false)) {
 			let settings = MODULE.setting('storage').find(rep => rep.uuid === this.object.reputationUuid)?.settings ?? {};
-			defaults = mergeObject(defaults, settings, {inplace: false});
+			MODULE.log('Reputation Settings', settings);
+			if (!isEmpty(settings)) defaults = Configure.getSettings(settings);
+
 			// If Faction is set, get faction defaults and merge with global defaults
 			if ((this?.object?.factionUuid ?? false)) {
 				settings = MODULE.setting('storage').find(rep => rep.uuid === this.object.reputationUuid)?.factions.find(fac => fac.uuid === this.object.factionUuid)?.settings ?? {};
-				defaults = mergeObject(defaults, settings, {inplace: false});
+				MODULE.log('Faction Settings', settings);
+				if (!isEmpty(settings)) defaults = Configure.getSettings(settings);
 			}
 			
 			// Check if Reputation or Faction has Settings
-			hasSettings = Object.keys(settings)?.length ?? 0 > 0;
+			hasSettings = (settings ?? {}).hasOwnProperty('tiers') ?? false;
 		}
 
 
 		return {
 			ID: MODULE.ID,
+			PRESETS: MODULE.setting('presets'),
 			title: () => {
 				if (this.object.reputationUuid && this.object.factionUuid) {
 					let title = MODULE.setting('storage').find(rep => rep.uuid === this.object.reputationUuid).factions.find(fac => fac.uuid === this.object.factionUuid).name;
@@ -97,6 +109,14 @@ export class Configure extends VueFormApplication {
 				store.showSettings = event.target.checked;
 				setTimeout(() => { ui.activeWindow.setPosition({ height: 'auto' }) }, 1);
 			},
+			onChangePreset: (event) => {
+				if (event.target.value === 'custom') return;
+				let settings = Configure.getSettings({ preset: event.target.value });
+				this._vue.store.faction = mergeObject(settings, { value: settings.default }, {inplace: false});
+				setTimeout(() => {
+					ui.activeWindow.setPosition({ height: 'auto' }) 
+				}, 1);
+			},
 			updateColorize: (faction, event) => { faction.colorize = event.target.checked; },
 			onReputationChange: this._onReputationChange,
 			onUpdateTier: ($event, faction, factionIdx) => {
@@ -133,11 +153,16 @@ export class Configure extends VueFormApplication {
 			SaveConfig: async (event, faction) => {
 				event.preventDefault();
 
+				// Get App Element
+				const elem = event.target.closest('form');
+				const preset = elem.querySelector('.form-fields select').value;
+
 				// If there Are No Tiers, don't save Config as its invalid
 				if (this._vue.store.faction.tiers?.length <= 0) return; 
 
 				// Remove Value from Faction
 				delete faction.value;
+				delete faction.preset;
 
 				// Wait For Setting To Update
 				// TODO: Move to Module.mjs and just always update ui when setting is updated
@@ -152,38 +177,142 @@ export class Configure extends VueFormApplication {
 					}
 				});
 
-				// Check if setting Global Configuration
-				if (this._vue.store.isGlobal) MODULE.setting('globalDefaults', faction);
-				// If Both Reputation and Faction are set, save Faction Configuration
-				else if ((this?.object?.reputationUuid ?? false) && (this?.object?.factionUuid ?? false)) {
-					let settings = MODULE.setting('storage');
-					let rep = settings.find(rep => rep.uuid === this.object.reputationUuid);
-					let fac = rep.factions.find(fac => fac.uuid === this.object.factionUuid);
+				MODULE.log('Saving Configuration', this.object, { data: faction });	
 
-					// If Overwrite is set, save Faction Configuration
-					if (this._vue.store.showSettings) fac.settings = faction;
-					// Otherwise, delete Faction Configuration
-					else delete fac.settings;
+				// 
+				const presets = MODULE.setting('presets');
+				const isGlobal = this._vue.store.isGlobal;
+				const isUnique = !isGlobal && this._vue.store.showSettings;
+				const isEqual = objectsEqual(presets.find(p => p.key === preset)?.settings ?? {}, faction);
+				const promptUser = isUnique && preset === 'custom' || preset !== 'globalDefaults';
+				const configDialog = this;
 
-					// Save Settings
-					MODULE.debug(settings);
-					MODULE.setting('storage', settings);
-				// If only Reputation is set, save Reputation Configuration
-				}else if (this?.object?.reputationUuid ?? false) {
-					let settings = MODULE.setting('storage');
-					let rep = settings.find(rep => rep.uuid === this.object.reputationUuid);
+				MODULE.debug({ isGlobal, preset, isUnique, isEqual, presets, faction });
 
-					// If Overwrite is set, save Reputation Configuration
-					if (this._vue.store.showSettings) rep.settings = faction;
-					// Otherwise, delete Reputation Configuration
-					else delete rep.settings;
-					
-					// Save Settings
-					MODULE.debug(settings);
-					MODULE.setting('storage', settings);
+				// If isGlobal and isEqual is false then Save Global Defaults
+				if (isGlobal && preset !== 'custom' && !isEqual) {
+					const isPresetUsed = () => {
+						let isUsed = false;
+						// Check if any reputation is using this preset
+						if (MODULE.setting('storage').find(rep => rep?.settings?.preset ?? '' === preset)) isUsed = true;
+						// Check if any faction in any reputation is using this preset
+						if (!isUsed && MODULE.setting('storage').find(rep => rep?.factions?.find(f => f?.settings?.preset ?? '' === preset))) isUsed = true;
+
+						return isUsed;
+					}
+
+					if (preset === 'globalDefaults' || isPresetUsed()) {
+						Dialog.confirm({
+							title: game.i18n.format(`${MODULE.ID}.configure.dialog.updatePreset.title`, {title: elem.querySelector('.form-fields select').selectedOptions[0].text }),
+							content: `<p>${game.i18n.format(`${MODULE.ID}.configure.dialog.updatePreset.content`, {title: elem.querySelector('.form-fields select').selectedOptions[0].text })}</p>`,
+							yes: async () => {
+								// Update Global Defaults with Settings
+								presets.find(p => p.key === preset).settings = faction
+
+								// Save Global Defaults
+								MODULE.setting('presets', presets);
+
+								// Close Configure Dialog
+								configDialog.close();
+							}
+						})
+					}else{
+						// Update Global Defaults with Settings
+						presets.find(p => p.key === preset).settings = faction
+
+						// Save Global Defaults
+						MODULE.setting('presets', presets);
+
+						// Close Configure Dialog
+						configDialog.close();
+					}
 				}
+				// If isGlobal and Preset == 'custom'
+				else if (isGlobal && preset === 'custom') {
+					new Dialog({
+						title: game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.title`),
+						content: `<p>${game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.content`)}</p>
+						<div class="form-group" style="margin-bottom: 1rem;">
+							<label>${game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.label`)}</label>
+							<input type="text" placeholder="${game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.label`)}" />
+						</div>`,
+						render: html => {
+							// Get Elements
+							const dialog = html[0].closest('.window-content');
+							const input = dialog.querySelector('input[type="text"]');
+							const buttonYes = dialog.querySelector('.dialog-buttons button.yes');
 
-				this.close();
+							buttonYes.disabled = true;
+							input.focus();
+
+							input.addEventListener('input', event => { buttonYes.disabled = !event.target.value.length > 0; })
+						},
+						buttons: {
+							yes: {
+								icon: '<i class="fas fa-check"></i>',
+								label: game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.buttons.yes`),
+								callback: (html) => {
+									const presetName = html[0].querySelector('input[type="text"]').value;
+									const presetKey = presetName.replace(/[^\w\s-]/g, '') .replace(/\s+/g, '-').trim().toLowerCase();   
+									// If user didn't enter a name, don't save
+									if (presetName.length <= 0) return ui.notifications.error(`<strong>${MODULE.TITLE}:</strong> ${game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.notifications.error`)}`);
+
+									// If Preset Name Already Exists
+									if (presets.find(p => p.key.toLowerCase() === presetKey)) return ui.notifications.error(`<strong>${MODULE.TITLE}:</strong> ${game.i18n.format(`${MODULE.ID}.configure.dialog.custom.notifications.exists`, { name: presetName })}`);
+									
+									presets.push({ key: presetKey, name: presetName, settings: faction });
+
+									// Save to Presets and Close Configuration Dialog
+									MODULE.setting('presets', presets);
+									configDialog.close();
+								}
+							},
+							no: {
+								icon: '<i class="fas fa-times"></i>',
+								label: game.i18n.localize(`${MODULE.ID}.configure.dialog.custom.buttons.no`),
+								callback: (html) => { }
+							}
+						},
+						default: 'yes'
+					}).render(true);
+				}
+				// If Updating Reputation or Faction
+				if (!isGlobal) {
+					const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+
+					// if Faction UUID is set, save Faction Configuration
+					if (this?.object?.factionUuid ?? false) {
+						let rep = updateWindow.find(rep => rep.uuid === this.object.reputationUuid);
+						let fac = rep.factions.find(fac => fac.uuid === this.object.factionUuid);
+
+						// Save Faction Preset, if Unique save settings otherwise save preset
+						fac.settings = isUnique ? faction : {preset: preset};
+
+						// Save Settings
+						MODULE.debug('SAVING FACTION', updateWindow);
+						MODULE.setting('storage', updateWindow);
+					}
+					// if only Reputation UUID is set, save Reputation Configuration
+					else if (this?.object?.reputationUuid ?? false) {
+						let rep = updateWindow.find(rep => rep.uuid === this.object.reputationUuid);
+
+						// Save Reputation Preset, if Unique save settings otherwise save preset
+						rep.settings = isUnique ? faction : {preset: preset};
+
+						// Save Settings
+						MODULE.debug('SAVING REPUTATION', updateWindow);
+						MODULE.setting('storage', updateWindow);
+					}
+
+					// Close Configure Dialog
+					configDialog.close();
+
+					if (Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.length > 0) {
+						setTimeout(() => {
+							Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?.setPosition({ height: 'auto' }) ?? false;
+						}, 1);
+					}
+				}
 			}
 		};	
 	}

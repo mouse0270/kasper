@@ -17,9 +17,59 @@ export default class CORE {
 	}
 
 	static installAPI = () => {
+		// TODO: API
 		game.modules.get(MODULE.ID).API = {
-			getFaction: (uuid) => {
-				return 'Not Implemented';
+			// Add Preset
+			addPreset: (preset) => {
+				// Check if Preset already Exists
+				if (MODULE.setting('presets').some(p => p.key === preset.key)) return;
+
+				// Add Preset to Presets
+				MODULE.setting('presets').push(preset);
+			},
+		};
+		// The API is not ready
+		return;
+
+		game.modules.get(MODULE.ID).API = {
+			// Get Reputation by UUID
+			getReputations: (uuid) => {
+				// Duplicate KASPER Array
+				const kasper = (MODULE.setting('storage')).slice(0);
+
+				// Filter Kasper where reputations.docUuid == uuid
+				return kasper.filter(rep => (rep?.docUuid ?? '') === uuid || rep.uuid === uuid);
+			},
+			// Get Faction by UUID
+			getFactions: (uuid) => {
+				// Duplicate KASPER Array
+				const kasper = (MODULE.setting('storage')).slice(0);
+
+				// Filter Kasper where factions.docUuid == uuid
+				return kasper.reduce((acc, rep) => {
+					if (rep.factions && rep.factions.some(faction => (faction?.docUuid ?? '') === uuid || faction.uuid === uuid)) {
+						acc.push({
+							...rep,
+							factions: rep.factions.filter(faction => (faction?.docUuid ?? '') === uuid || faction.uuid === uuid)
+						});
+					}
+					return acc;
+				}, []);
+			},
+			// set Reputation by UUID
+			setReputation: (repUuid, factionUuid = null, value = null) => {
+				if (!value) {
+					value = factionUuid;
+					factionUuid = repUuid;
+				}
+
+				// If Value is NaN something is wrong, boot out.
+				if (Number.isNaN(value)) return;
+
+				// Get State from Active Window or Storage
+				const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+
+				// 
 			}
 		};
 	}
@@ -57,12 +107,51 @@ export default class CORE {
 		} 
 	};
 
+	static async createItem (document, options, userId) {
+		// Get State from Active Window or Storage
+		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+
+		// Get Parent Document, If it Exists, otherwise return
+		const parentDocument = document?.parent ?? null;
+		if (!parentDocument) return;
+
+		// Check if Parent Document is in Reputation Tracker
+		const reputation = updateWindow.find(rep => (rep?.docUuid ?? '') == parentDocument.uuid);
+		if (!reputation) return;
+
+		const settings = mergeObject(MODULE.setting('globalDefaults'), reputation?.settings ?? {});
+
+		// Add Faction to Reputation Tracker
+		reputation.factions.push({
+			uuid: `${MODULE.ID}.${randomID()}`,
+			docUuid: document.uuid,
+			name: document.name,
+			reputation: settings?.default ?? 0,
+		});
+				
+		// Store New Name
+		MODULE.setting('storage', updateWindow);
+
+		// Resize Window if Open
+		if (Object.entries(ui.windows).find(w => w[1].id == `${MODULE.ID}-manager`)?.[1]) {
+			setTimeout(() => {
+				Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1].setPosition({ height: 'auto' });
+			}, 1);
+		}
+	};
+
 	static async updateItem (document, data, options, userId) {
 		// Get State from Active Window or Storage
 		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
 	
 		// Handle for when Document is in mutliple Reputation Trackers
 		updateWindow.forEach(rep => {
+			// Check if Reputation Tracker is Linked to Document
+			if ((rep?.docUuid ?? '') == document.uuid) {
+				// If Document is Updated, than Update Reputation Tracker
+				rep.name = document.name;
+			}
+
 			// Check if each Reputation Tracker has Document in Factions
 			if (!rep.factions.find(fac => fac.docUuid == document.uuid)) return;
 	

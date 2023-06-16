@@ -16,6 +16,16 @@
 	</section>
 	<h3>{{localize(`${store.ID}.configure.settings.title`)}}</h3>
 	<section v-model="store.showSettings">
+		<div class="form-group">
+            <label><strong>{{localize(`${store.ID}.configure.settings.presets.name`)}}</strong></label>
+            <div class="form-fields">
+                <select @change="store.onChangePreset($event)">
+					<option v-for="(preset, pIdx) in store.PRESETS" :key="preset.key" :value="preset.key" :selected="store.faction.preset == preset.key">{{preset.name}}</option>
+					<option v-if="store.isGlobal" value="custom">{{localize(`${store.ID}.configure.settings.presets.custom.name`)}}</option>
+				</select>
+            </div>
+			<p class="notes">{{localize(`${store.ID}.configure.settings.presets.hint`)}}</p>
+		</div>
 		<div class="form-group" v-if="!store.isGlobal">
             <label><strong>{{localize(`${store.ID}.configure.settings.override.name`)}}</strong></label>
             <div class="form-fields">
@@ -23,37 +33,37 @@
             </div>
 			<p class="notes">{{localize(`${store.ID}.configure.settings.override.hint`)}}</p>
 		</div>
-		<div class="form-group" v-if="store.showSettings || store.isGlobal">
+		<div class="form-group">
 			<label><strong>{{localize(`${store.ID}.configure.settings.minimum.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.min" :max="store.faction.max" :step="store.faction.step">
+				<input type="number" v-model="store.faction.min" :max="store.faction.max" :step="store.faction.step" :disabled="!store.showSettings && !store.isGlobal">
 			</div>
 			<p class="notes">{{localize(`${store.ID}.configure.settings.minimum.hint`)}}</p>
 		</div>
-		<div class="form-group" v-if="store.showSettings || store.isGlobal">
+		<div class="form-group">
 			<label><strong>{{localize(`${store.ID}.configure.settings.maximum.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.max" :min="store.faction.min" :step="store.faction.step">
+				<input type="number" v-model="store.faction.max" :min="store.faction.min" :step="store.faction.step" :disabled="!store.showSettings && !store.isGlobal">
 			</div>
 			<p class="notes">{{localize(`${store.ID}.configure.settings.maximum.hint`)}}</p>
 		</div>
-		<div class="form-group" v-if="store.showSettings || store.isGlobal">
+		<div class="form-group">
 			<label><strong>{{localize(`${store.ID}.configure.settings.default.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.default" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @change="store.faction.value = store.faction.default">
+				<input type="number" v-model="store.faction.default" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @change="store.faction.value = store.faction.default" :disabled="!store.showSettings && !store.isGlobal">
 			</div>
 			<p class="notes">{{localize(`${store.ID}.configure.settings.default.hint`)}}</p>
 		</div>
-		<div class="form-group" v-if="store.showSettings || store.isGlobal">
+		<div class="form-group">
             <label><strong>{{localize(`${store.ID}.configure.settings.colorize.name`)}}</strong></label>
             <div class="form-fields">
-                <input type="checkbox" :v-model="store.faction.colorize" :checked="store.faction.colorize" @change="store.updateColorize(store.faction, $event)">
+                <input type="checkbox" :v-model="store.faction.colorize" :checked="store.faction.colorize" @change="store.updateColorize(store.faction, $event)" :disabled="!store.showSettings && !store.isGlobal">
             </div>
 			<p class="notes">{{localize(`${store.ID}.configure.settings.colorize.hint`)}}</p>
 		</div>
 	</section>
-	<h3 v-if="store.showSettings || store.isGlobal">{{localize(`${store.ID}.configure.tiers.title`)}}</h3>
-	<section class="tiers" v-if="store.showSettings || store.isGlobal">
+	<h3>{{localize(`${store.ID}.configure.tiers.title`)}}</h3>
+	<section class="tiers">
 		<ul>
 			<li class="header">
 				<div class="form-group">
@@ -66,13 +76,13 @@
 			<li v-for="(tiers, fIdx) in store.faction.tiers" :data-tier="fIdx">
 				<div class="form-group">
 					<div class="form-fields">
-						<input type="number" :value="tiers[0]" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @blur="store.onUpdateTier($event, store.faction, fIdx)">
-						<input type="text" v-model="tiers[1]">
-						<button @click="store.onRemoveTier($event, store.faction, fIdx)"><i class="fa-regular fa-trash-can-xmark"></i></button>
+						<input type="number" :value="tiers[0]" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @blur="store.onUpdateTier($event, store.faction, fIdx)" :disabled="!store.showSettings && !store.isGlobal">
+						<input type="text" v-model="tiers[1]" :disabled="!store.showSettings && !store.isGlobal">
+						<button v-if="store.showSettings || store.isGlobal" :data-tooltip="game.i18n.localize('Delete')" @click="store.onRemoveTier($event, store.faction, fIdx)" :disabled="!store.showSettings && !store.isGlobal"><i class="fa-regular fa-trash-can-xmark"></i></button>
 					</div>
 				</div>
 			</li>
-			<li>
+			<li v-if="store.showSettings || store.isGlobal">
 				<div class="form-group">
 					<div class="form-fields">
 						<input type="number" :value="store.faction.value" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step">

@@ -26,8 +26,9 @@
 		}
 	],
 
+	"persistentStorage": false,
 	"library": false,
-	"socket": true,
+	"socket": false,
 
 	"relationships": {
 		"systems": [],

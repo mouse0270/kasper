@@ -43,6 +43,11 @@
 					"name": "Define Unique Settings",
 					"hint": "This will override the parent settings for this element and its children."
 				},
+				"presets": {
+					"name": "Load Preset",
+					"hint": "This will load a preset of values for use with the selected reputation tracker.",
+					"custom.name": "Custom"
+				},
 				"minimum": {
 					"name": "Lowest Reputation Value",
 					"hint": "This is the lowest value a reputation can be. This is usually the most negative value."
@@ -64,6 +69,23 @@
 				"title": "Define Tiers",
 				"headingLabel": "Tier Label",
 				"addTierLabel": "Set Tier Label"
+			},
+			"dialog": {
+				"updatePreset": {
+					"title": "Update {title} Preset",
+					"content": "Warning! This will overwrite the {title} preset, meaning any trackers using this preset will be updated. Are you sure you want to continue?"
+				},
+				"custom": {
+					"title": "Create a New Custom Preset",
+					"content": "Please enter a name for your new preset below.",
+					"label": "Preset Name",
+					"buttons.yes": "Create Preset",
+					"buttons.no": "Cancel",
+					"notifications": {
+						"error": "No preset name was provided. Preset was not created!",
+						"exists": "{name} already exists as a preset. Preset was not created!"
+					}
+				}
 			}
 		},
 		"reputation": {
@@ -75,7 +97,7 @@
 
 		"TIERS": {
 			"house-divided": {
-				"title": "House Divided",
+				"title": "A House Divided",
 				"labels": {
 					"Despised": "Despised",
   					"Scorned": "Scorned",
@@ -112,11 +134,12 @@
 					"BrigadierGeneral": "Brigadier General",
 					"MajorGeneral": "Major General",
 					"LieutenantGeneral": "Lieutenant General",
-					"General": "General"
+					"General": "General",
+					"Commander": "Commander"
 				}
 			},
 			"generic": {
-				"title": "Generic",
+				"title": "Global Config",
 				"labels": {
 					"Infamous": "Infamous",
 					"Exalted": "Exalted",

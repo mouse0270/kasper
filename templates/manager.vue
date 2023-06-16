@@ -3,15 +3,15 @@
 		<section :class="`${store.ID}-faction-container`" v-for="(reputation, rIdex) in store.reputations" :id="reputation.uuid" :key="reputation.uuid">
 			<header>
 				<button data-action="sortable" :data-tooltip="l(`${store.ID}.manager.sortable`)" @click="(event) => { event.preventDefault(); }"><i class="sortablejs-handle fa-solid fa-grip-vertical"></i></button>
-				<h1 :contenteditable="game.user.isGM" @keydown="store.onContentEditableKeydown($event)" @blur="store.onRepuationNameChange(reputation, $event, store)">{{reputation.name}}</h1>
+				<h1 :contenteditable="(reputation?.docUuid?.startsWith(`${store.ID}.`) ?? game.user.isGM) && game.user.isGM" @keydown="store.onContentEditableKeydown($event)" @blur="store.onRepuationNameChange(reputation, $event, store)">{{reputation.name}}</h1>
 				<button data-action="add-faction" :data-tooltip="l(`${store.ID}.manager.addFaction`)" @click="store.addFaction(reputation, store)"><i class="fa-regular fa-circle-plus"></i></button>
 			</header>
 			<ul>
-				<li v-for="(faction, fIdx) in reputation.factions" :id="faction.uuid">
+				<li v-for="(faction, fIdx) in reputation.factions" :id="faction.uuid" :key="faction.uuid">
 					<button data-action="sortable" :data-tooltip="l(`${store.ID}.manager.sortable`)" @click="(event) => { event.preventDefault(); }"><i class="sortablejs-handle fa-solid fa-grip-vertical"></i></button>
 					<button data-action="decrease-reputation" :data-tooltip="l(`${store.ID}.manager.decreaseReputation`)" @click="store.onReputationChange(store.getSettings(reputation, faction), faction, 'decrease', store)"><i class="fa-regular fa-circle-minus"></i></button>
 					<div class="form-group" :style="store.getStyle(reputation, faction, $el)">
-						<label for="faction" @keydown="store.onContentEditableKeydown($event)" :data-tooltip="faction.name.length > 20 ? faction.name : null" :contenteditable="(faction?.docUuid?.startsWith(`${store.ID}.`) ?? game.user.isGM) && game.user.isGM" @blur="store.onFactionNameChange(reputation, faction, $event, store)">{{faction.name}}</label>
+						<label for="faction" :data-tooltip="faction.name.length > 20 ? faction.name : null" :contenteditable="(faction?.docUuid?.startsWith(`${store.ID}.`) ?? game.user.isGM) && game.user.isGM" @keydown="store.onContentEditableKeydown($event)" @blur="store.onFactionNameChange(reputation, faction, $event, store)">{{faction.name}}</label>
 						<input type="range" v-model="faction.reputation" :value="faction.reputation" :min="store.getSettings(reputation, faction).min" :max="store.getSettings(reputation, faction).max" step="store.getSettings(reputation, faction).step" @change="store.onReputationChange(store.getSettings(reputation, faction), faction, $event, store)">
 						<p class="notes">{{store.getLabel(reputation, faction)}} ({{faction.reputation}})</p>
 					</div>

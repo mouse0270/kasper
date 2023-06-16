@@ -28,7 +28,18 @@ export class Manager extends VueApplication {
 	}
 
 	getSettings(reputation = null, faction = null) {
-		return mergeObject(MODULE.setting('globalDefaults'), mergeObject(reputation?.settings ?? {}, faction?.settings ?? {}, { inplace: false }), { inplace: false });
+		let settings = MODULE.setting('globalDefaults'); //mergeObject(MODULE.setting('globalDefaults'), mergeObject(reputation?.settings ?? {}, faction?.settings ?? {}, { inplace: false }), { inplace: false });
+		if (reputation?.settings ?? false) settings = reputation.settings;
+		if (faction?.settings ?? false) settings = faction.settings;
+
+		// Check if settings has a preset
+		let presets = MODULE.setting('presets');
+		if ((settings?.preset ?? false) && (settings.preset !== 'custom')) {
+			if (presets.find(preset => preset.key === settings.preset)?.settings ?? false) settings = presets.find(preset => preset.key === settings.preset).settings;
+		}
+
+		// Check if settings 
+		return settings;
 	}
 
 	getConditions(reputation, faction) {
@@ -78,13 +89,6 @@ export class Manager extends VueApplication {
 			},
 			getSettings: (reputation, faction) => this.getSettings(reputation, faction),
 			addReputation: () => {
-				/*this._vue.store.reputations.push({
-					"uuid": `${MODULE.ID}.${randomID()}`,	
-					"name": MODULE.localize('reputation.title'),
-					"factions": []	
-				});
-
-				setTimeout(() => { this.setPosition({ height: 'auto' }); }, 1);*/
 				this._addReputation({
 					"uuid": `${MODULE.ID}.${randomID()}`,	
 					"name": MODULE.localize('reputation.title'),
@@ -93,15 +97,22 @@ export class Manager extends VueApplication {
 			},
 			onContentEditableKeydown: (event, reputation, store) => {
 				if (event.key == 'Enter') {
+					// Stop Default Behavior and Force Blur
 					event.preventDefault();
-					event.stopPropagation();
 					event.target.blur();
 
-					if (event.target.parentElement.nodeName == 'HEADER') {
-						event.target.parentElement.querySelector(`button:last-child`).focus();
-					}else if (event.target.parentElement.classList.contains('form-group')) {
-						event.target.parentElement.querySelector(`input[type="range"]`).focus();
-					}
+					// Browsers sometimes don't like when you do blur and focus in the same tick
+					setTimeout(() => { 
+						// Refocus on Input (Places cursor at start of word)
+						event.target.focus(); 
+
+						// Move Cursor to End of Text
+						const range = document.createRange(), selection = window.getSelection();
+						range.selectNodeContents(event.target)
+						range.collapse(false);
+						selection.removeAllRanges();
+						selection.addRange(range);
+					}, 1);
 				}
 			},
 			onRepuationNameChange: this._onRepuationNameChange,
@@ -207,6 +218,10 @@ export class Manager extends VueApplication {
 		MODULE.setting('storage', store.reputations);
 	}
 
+	// TODO: Add Support for Linking Documents to Factions.
+	// - This will be accomplished by holding down shift and dropping the document onto a faction.
+	// - If the faction is a kasper element, it will just overwrite it with the dropped document.
+	// - If the faction is already linked, prompt user for confirmation to overwrite.
 	async _onDrop(event) {
 		// Get Properties from Event
         const { target } = event;
@@ -241,6 +256,11 @@ export class Manager extends VueApplication {
 			}]
 		};
 
+		// Prevent Folders from being Linked Documents
+		// ? Folders aren't containers in foundry, instead they are referenced on documents. This makes it complicated to determine when they are updated
+		// - so its just easier to not allow them to be linked.
+		if (type == 'Folder') delete data.docUuid;
+
 
 		// If type is folder or journal entry
 		if (type == 'Folder' || (type == 'JournalEntry' && targetSection == null)) {
@@ -257,6 +277,8 @@ export class Manager extends VueApplication {
 				}
 			});
 		}
+
+		MODULE.debug('DROP DATA', event, eventData, document, data, targetSection);
 
 		// Add Reputation to Tracker
 		this._addReputation(data, targetSection);

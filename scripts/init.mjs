@@ -9,7 +9,7 @@ import { default as CORE } from './module.mjs';
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
 Hooks.once('socketlib.ready', () => {
 	MODULE.log('debug', 'SOCKETLIB Ready - SOCKET'); // WONT REGISTER CAUSE CALL HAPPENS WAY TO EARLY
-	CORE.registerSocketLib();
+	if (game.modules.get(MODULE.ID)?.socket ?? false) CORE.registerSocketLib();
 });
 
 /* ─────────────── ⋆⋅☆⋅⋆ ─────────────── */
@@ -29,7 +29,12 @@ Hooks.on('deleteActor', CORE.deleteItem);
 
 // Update Journal if Journal is updated outside of Reputation Tracker
 Hooks.on('updateJournalEntry', CORE.updateItem);
+Hooks.on('updateJournalEntryPage', CORE.updateItem);
 Hooks.on('deleteJournalEntry', CORE.deleteItem);
+Hooks.on('deleteJournalEntryPage', CORE.deleteItem);
+
+// Handle Linked Journal when a Page is created
+Hooks.on('createJournalEntryPage', CORE.createItem);
 
 // Add Button || Pin to Journal Tab
 Hooks.on('renderSidebarTab', CORE.renderSidebarTab);
