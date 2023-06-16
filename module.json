@@ -1,7 +1,7 @@
 {
 	"id": "kasper",
 	"title": "👻 KASPER | Karma Assessment and Player Evaluation Resource",
-	"description": "This module is desgined to track players Karam or Reputation to factions or npcs or really anything you want to track.",
+	"description": "Elevate your gaming experience with KASPER's highly configurable Tiered Ranking system, providing you with a powerful tool to effortlessly create and monitor various aspects of player interactions. Whether it's measuring a player's relationship with an NPC or tracking their prestigious rank within different Factions, KASPER is equipped to handle it all. From X to Y, there's no limit to what KASPER can track.",
 	"version": "1.0.0",
 	"compatibility": {
 		"minimum": 10,
