@@ -1,4 +1,4 @@
-// GET REQUIRED LIBRARIES
+// GET REQUIRED LIBRARIESManagerApp
 
 // GET MODULE CORE
 import { MODULE } from './_module.mjs';
@@ -7,7 +7,8 @@ import { MODULE } from './_module.mjs';
 import './_settings.mjs';
 
 // IMPORT DIALOGS
-import { Manager } from './dialogs/manager.mjs';
+//import { Manager } from './dialogs/manager.mjs';
+import { ManagerApp } from './dialogs/manager.mjs';
 
 // DEFINE MODULE CLASS
 export default class CORE {
@@ -30,48 +31,6 @@ export default class CORE {
 		};
 		// The API is not ready
 		return;
-
-		game.modules.get(MODULE.ID).API = {
-			// Get Reputation by UUID
-			getReputations: (uuid) => {
-				// Duplicate KASPER Array
-				const kasper = (MODULE.setting('storage')).slice(0);
-
-				// Filter Kasper where reputations.docUuid == uuid
-				return kasper.filter(rep => (rep?.docUuid ?? '') === uuid || rep.uuid === uuid);
-			},
-			// Get Faction by UUID
-			getFactions: (uuid) => {
-				// Duplicate KASPER Array
-				const kasper = (MODULE.setting('storage')).slice(0);
-
-				// Filter Kasper where factions.docUuid == uuid
-				return kasper.reduce((acc, rep) => {
-					if (rep.factions && rep.factions.some(faction => (faction?.docUuid ?? '') === uuid || faction.uuid === uuid)) {
-						acc.push({
-							...rep,
-							factions: rep.factions.filter(faction => (faction?.docUuid ?? '') === uuid || faction.uuid === uuid)
-						});
-					}
-					return acc;
-				}, []);
-			},
-			// set Reputation by UUID
-			setReputation: (repUuid, factionUuid = null, value = null) => {
-				if (!value) {
-					value = factionUuid;
-					factionUuid = repUuid;
-				}
-
-				// If Value is NaN something is wrong, boot out.
-				if (Number.isNaN(value)) return;
-
-				// Get State from Active Window or Storage
-				const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
-
-				// 
-			}
-		};
 	}
 
 	static init = () => {
@@ -80,7 +39,7 @@ export default class CORE {
 
 	static async renderSidebarTab (app, elem, options) {
 		// Check if User is GM
-		if (!game.user.isGM) return;
+		//if (!game.user.isGM) return;
 
 		// Check if Hook is for Journal
 		if (!['journal', 'journal-popout'].includes(app.id))  return;
@@ -97,11 +56,11 @@ export default class CORE {
 		elem[0].querySelector(`header.directory-header .header-actions button[data-action="open-${MODULE.ID}"]`).addEventListener('click', async (event) => {
 			event.preventDefault();
 			// Open Mangager or Focus if already open
-			new Manager({}).render(true);
+			new ManagerApp({}).render(true);
 		});
 
 		if (MODULE.setting('trigger') == 'pinned') {
-			if (!Object.entries(ui.windows).find(w => w[1].id == `${MODULE.ID}-manager`)?.[1]) new Manager({}).render(true);
+			if (!Object.entries(ui.windows).find(w => w[1].id == `${MODULE.ID}-manager`)?.[1]) new ManagerApp({}).render(true);
 
 			elem[0].querySelector(`header.directory-header .header-actions button[data-action="open-${MODULE.ID}"]`).style.display = 'none';
 		} 
@@ -109,7 +68,7 @@ export default class CORE {
 
 	static async createItem (document, options, userId) {
 		// Get State from Active Window or Storage
-		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?.vue?.session?.reputations ?? MODULE.setting('storage');
 
 		// Get Parent Document, If it Exists, otherwise return
 		const parentDocument = document?.parent ?? null;
@@ -142,7 +101,7 @@ export default class CORE {
 
 	static async updateItem (document, data, options, userId) {
 		// Get State from Active Window or Storage
-		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?.vue?.session?.reputations ?? MODULE.setting('storage');
 	
 		// Handle for when Document is in mutliple Reputation Trackers
 		updateWindow.forEach(rep => {
@@ -170,7 +129,7 @@ export default class CORE {
 
 	static async deleteItem (document, options, userId) {
 		// Get State from Active Window or Storage
-		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?._vue?.store?.reputations ?? MODULE.setting('storage');
+		const updateWindow = Object.entries(ui.windows).find(w => w[1].id == "kasper-manager")?.[1]?.vue?.session?.reputations ?? MODULE.setting('storage');
 	
 		// If Document is not Found in Faction list, than return
 		if (!updateWindow.find(rep => rep.factions.find(fac => fac.docUuid == document.uuid))) return;

@@ -1,98 +1,103 @@
-<main>
-	<header><h2>{{store.title()}}</h2></header>
-	<h3>{{game.i18n.localize('Preview')}}</h3>
+<main :class="ModuleID">
+	<header>
+		<h1>{{localize(`${ModuleID}.configure.title`)}}</h1>
+		<h4>Define Global Settings</h4>
+	</header>
+	<h3>{{localize('Preview')}}</h3>
 	<section class="preview">
 		<ul>
-			<li :id="`${store.ID}.Preview`">
-				<div class="form-group" :data-is-colorized="store.faction.colorize" :style="store.getStyle(store.faction, $el)">
-					<label for="faction">{{l(`${store.ID}.reputation.faction.title`)}}</label>
-					<input type="range" v-model="store.faction.value" :min="store.faction.min" :max="store.faction.max" step="store.faction.step" @change="store.onReputationChange(store.faction, $event, null)">
-					<p class="notes">{{store.getLabel(store.faction)}} ({{store.faction.value}})</p>
+			<li :id="`${ModuleID}.Preview`">
+				<div class="form-group" :data-is-colorized="faction.colorize" :style="getStyle(faction, $el)">
+					<label for="faction">{{localize(`${ModuleID}.reputation.faction.title`)}}</label>
+					<input type="range" v-model="faction.value" :min="faction.min" :max="faction.max" step="faction.step">
+					<p class="notes">{{getLabel(faction)}} ({{faction.value}})</p>
 				</div>
-				<button data-action="decrease-reputation" :data-tooltip="l(`${store.ID}.manager.decreaseReputation`)" @click="store.onReputationChange(store.faction, $event, 'decrease')"><i class="fa-regular fa-circle-minus"></i></button>
-				<button data-action="increase-reputation" :data-tooltip="l(`${store.ID}.manager.increaseReputation`)" @click="store.onReputationChange(store.faction, $event, 'increase')"><i class="fa-regular fa-circle-plus"></i></button>
+				<button data-action="decrease" :data-tooltip="localize(`${ModuleID}.manager.decreaseReputation`)" @click="onChangeReputation"><i class="fa-regular fa-circle-minus"></i></button>
+				<button data-action="increase" :data-tooltip="localize(`${ModuleID}.manager.increaseReputation`)" @click="onChangeReputation"><i class="fa-regular fa-circle-plus"></i></button>
 			</li>
 		</ul>
 	</section>
-	<h3>{{localize(`${store.ID}.configure.settings.title`)}}</h3>
-	<section v-model="store.showSettings">
+	<h3>{{localize(`${ModuleID}.configure.settings.title`)}}</h3>
+	<section>
 		<div class="form-group">
-            <label><strong>{{localize(`${store.ID}.configure.settings.presets.name`)}}</strong></label>
+            <label><strong>{{localize(`${ModuleID}.configure.settings.presets.name`)}}</strong></label>
             <div class="form-fields">
-                <select @change="store.onChangePreset($event)">
-					<option v-for="(preset, pIdx) in store.PRESETS" :key="preset.key" :value="preset.key" :selected="store.faction.preset == preset.key">{{preset.name}}</option>
-					<option v-if="store.isGlobal" value="custom">{{localize(`${store.ID}.configure.settings.presets.custom.name`)}}</option>
+                <select @change="onChangePreset($event)">
+					<option v-if="!isGlobal" value="inherit">{{localize(`${ModuleID}.configure.settings.presets.inherit.name`)}}</option>
+					<option v-for="(preset, pIdx) in PRESETS" :key="preset.key" :value="preset.key" :selected="faction.preset == preset.key">{{preset.name}}</option>
+					<option v-if="isGlobal || overrideSettings" value="custom" :selected="faction.preset == 'custom'">{{localize(`${ModuleID}.configure.settings.presets.custom.name`)}}</option>
 				</select>
             </div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.presets.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.presets.hint`)}}</p>
 		</div>
-		<div class="form-group" v-if="!store.isGlobal">
-            <label><strong>{{localize(`${store.ID}.configure.settings.override.name`)}}</strong></label>
+		<div class="form-group" v-if="!isGlobal">
+            <label><strong>{{localize(`${ModuleID}.configure.settings.override.name`)}}</strong></label>
             <div class="form-fields">
-                 <input type="checkbox" :v-model="store.showSettings" :checked="store.showSettings" @change="store.showSettingsToggle($event, store)">
+                 <input type="checkbox" v-model="overrideSettings" :checked="overrideSettings" @change="onChangeOverrideSettings">
             </div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.override.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.override.hint`)}}</p>
 		</div>
 		<div class="form-group">
-			<label><strong>{{localize(`${store.ID}.configure.settings.minimum.name`)}}</strong></label>
+			<label><strong>{{localize(`${ModuleID}.configure.settings.minimum.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.min" :max="store.faction.max" :step="store.faction.step" :disabled="!store.showSettings && !store.isGlobal">
+				<input type="number" v-model="faction.min" :max="faction.max" :step="faction.step" :disabled="!overrideSettings && !isGlobal">
 			</div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.minimum.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.minimum.hint`)}}</p>
 		</div>
 		<div class="form-group">
-			<label><strong>{{localize(`${store.ID}.configure.settings.maximum.name`)}}</strong></label>
+			<label><strong>{{localize(`${ModuleID}.configure.settings.maximum.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.max" :min="store.faction.min" :step="store.faction.step" :disabled="!store.showSettings && !store.isGlobal">
+				<input type="number" v-model="faction.max" :min="faction.min" :step="faction.step" :disabled="!overrideSettings && !isGlobal">
 			</div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.maximum.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.maximum.hint`)}}</p>
 		</div>
 		<div class="form-group">
-			<label><strong>{{localize(`${store.ID}.configure.settings.default.name`)}}</strong></label>
+			<label><strong>{{localize(`${ModuleID}.configure.settings.default.name`)}}</strong></label>
 			<div class="form-fields">
-				<input type="number" v-model="store.faction.default" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @change="store.faction.value = store.faction.default" :disabled="!store.showSettings && !store.isGlobal">
+				<input type="number" v-model="faction.default" :min="faction.min" :max="faction.max" :step="faction.step" @change="faction.value = faction.default" :disabled="!overrideSettings && !isGlobal">
 			</div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.default.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.default.hint`)}}</p>
 		</div>
 		<div class="form-group">
-            <label><strong>{{localize(`${store.ID}.configure.settings.colorize.name`)}}</strong></label>
+            <label><strong>{{localize(`${ModuleID}.configure.settings.colorize.name`)}}</strong></label>
             <div class="form-fields">
-                <input type="checkbox" :v-model="store.faction.colorize" :checked="store.faction.colorize" @change="store.updateColorize(store.faction, $event)" :disabled="!store.showSettings && !store.isGlobal">
+                <input type="checkbox" :v-model="faction.colorize" :checked="faction.colorize" @change="onChangeColorize" :disabled="!overrideSettings && !isGlobal">
             </div>
-			<p class="notes">{{localize(`${store.ID}.configure.settings.colorize.hint`)}}</p>
+			<p class="notes">{{localize(`${ModuleID}.configure.settings.colorize.hint`)}}</p>
 		</div>
 	</section>
-	<h3>{{localize(`${store.ID}.configure.tiers.title`)}}</h3>
+	<h3>{{localize(`${ModuleID}.configure.tiers.title`)}}</h3>
 	<section class="tiers">
 		<ul>
 			<li class="header">
 				<div class="form-group">
 					<div class="form-fields">
 						<input type="text" value="<=" readonly disabled>
-						<input type="text" :value="localize(`${store.ID}.configure.tiers.headingLabel`)" readonly disabled>
+						<input type="text" :value="localize(`${ModuleID}.configure.tiers.headingLabel`)" readonly disabled>
 					</div>
 				</div>
 			</li>
-			<li v-for="(tiers, fIdx) in store.faction.tiers" :data-tier="fIdx">
+			<li v-for="(tiers, fIdx) in faction.tiers" :data-tier="fIdx">
 				<div class="form-group">
 					<div class="form-fields">
-						<input type="number" :value="tiers[0]" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step" @blur="store.onUpdateTier($event, store.faction, fIdx)" :disabled="!store.showSettings && !store.isGlobal">
-						<input type="text" v-model="tiers[1]" :disabled="!store.showSettings && !store.isGlobal">
-						<button v-if="store.showSettings || store.isGlobal" :data-tooltip="game.i18n.localize('Delete')" @click="store.onRemoveTier($event, store.faction, fIdx)" :disabled="!store.showSettings && !store.isGlobal"><i class="fa-regular fa-trash-can-xmark"></i></button>
+						<input type="number" :value="tiers[0]" :min="faction.min" :max="faction.max" :step="faction.step" @blur="onUpdateTier" :disabled="!overrideSettings && !isGlobal">
+						<input type="text" v-model="tiers[1]" :disabled="!overrideSettings && !isGlobal">
+						<button v-if="overrideSettings || isGlobal" :data-tooltip="localize('Delete')" @click="onRemoveTier" :disabled="!overrideSettings && !isGlobal"><i class="fa-regular fa-trash-can-xmark"></i></button>
 					</div>
 				</div>
 			</li>
-			<li v-if="store.showSettings || store.isGlobal">
+			<li v-if="overrideSettings || isGlobal">
 				<div class="form-group">
 					<div class="form-fields">
-						<input type="number" :value="store.faction.value" :min="store.faction.min" :max="store.faction.max" :step="store.faction.step">
-						<input type="text" :placeholder="localize(`${store.ID}.configure.tiers.addTierLabel`)">
-						<button @click="store.onAddTier($event, store.faction)"><i class="fa-solid fa-floppy-disk"></i></button>
+						<input type="number" :value="faction.value" :min="faction.min" :max="faction.max" :step="faction.step">
+						<input type="text" :placeholder="localize(`${ModuleID}.configure.tiers.addTierLabel`)">
+						<button @click="onAddTier"><i class="fa-solid fa-floppy-disk"></i></button>
 					</div>
 				</div>
 			</li>
+		</ul>
 	</section>
 	<footer>
-		<button type="submit" @click="store.SaveConfig($event, store.faction)"><i class="fas fa-save"></i> {{game.i18n.localize('Save Changes')}}</button>
+		<button type="submit" :data-tooltip="(faction.preset !== 'globalDefaults' && isGlobal) ? localize(`${ModuleID}.configure.tooltips.overrideGlobalDefaults`) : ''" @click="onSubmit"><i class="fas fa-save"></i> {{localize('Save Changes')}}</button>
 	</footer>
 </main>

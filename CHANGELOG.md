@@ -1,5 +1,20 @@
-# Version 1.0.1
+# Version 1.1.0 - B...........OOOOO, Did I scare you?
+- Ajusted the Generic Presets Labels from
+  - Infamous to Loathed
+  - Exalted to Despised
+  - Feared to Scorned
 - Fixed a duplicate line in the Readme.md file
+- Fixed Firefox not Stlying Range Inputs correctly
+- Added Option to Show/Hide Trackers to Players
+- Added Preset for PF2e Reputation found on *Gamemastery Guide p.164*
+- Added Support for libThemer and PF2e Dorako UI - Dark Theme (Buttons for Header when hovered well slightly overlap border... I work on this later).
+- Added the ability to quickly override the Global Defaults with a preset. When editing presets, if you hold down `SHIFT` and click on the *Save Changes* Button, you will be prompted to override the Global Defaults with whatever settings are current selected. This is useful, if you want to quickly set Pathfinder 2e Reputations as the Global Defaults.
+- Added the ability to hold `shift` while pressing the increase/decrease buttons to increase/decrease by 5 instead of 1
+- Disabled wheel scrolling over range inputs from changing value unless holding down `ctrl` key. This is to prevent accidental changes to the value when scrolling through the page.
+  - Holding `ctrl + shift` well scrolling will increase/decrease by 5 instead of 1
+> If using [Disable Mouse Wheel Control for Sliders](https://foundryvtt.com/packages/disable-mouse-wheel-sliders) Module, this setting will be ignored and instead use that moudes keybinds. Please be aware if you use `shift` as the Escape key for this module, you will not be able to increment/decrement by a value of one and instead will always increment/decrement by 5. I HIGHLY suggest you use ctrl or alt as your escape key for that module when using KASPER.
+- Added `text-shadow` to Label when using minify mode to make it easier to read (This is a temporary fix until I can figure out a better fix).
+
 # Version 1.0.0 - A Wild Ghost Appears, and so does KASPER
 Introducing KASPER: The Ultimate Karma and Player Evaluation Resource
 

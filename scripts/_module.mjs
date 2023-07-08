@@ -13,8 +13,8 @@ export class MODULE {
 
 	// Set Package Options
 	static OPTIONS = {
-		background: '#7030A0',
-		color: '#fff'
+		background: '#d4d4d4',
+		color: '#000'
 	}
 
 	// Check if Dev Mode is enabled

@@ -1,12 +1,165 @@
 #kasper-manager, #kasper-configure {
-	--button-background-color: rgba(255, 255, 240, 0.8);
+	--button-background-color: var(--palette-primary, rgba(255, 255, 240, 0.8));
+	--button-border-color: var(--palette-primary-outline, var(--color-border-light-primary));
+	--button-foreground-color: var(--palette-primary-contrast, var(--color-text-dark-primary));
 	--list-background-color: rgba(0, 0, 0, 0.1);
 	--border-radius: 0.25rem;
 }
 
+@mixin range-track-thumb-styles {
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 0px;
+	border-width: 0px;
+	box-shadow: none;
+	height: 16px;
+}
+
+@mixin range-thumb-styles {
+	-webkit-appearance: none;
+	width: 16px;
+	height: 16px;
+	background: var(--color-text-hyperlink);
+	box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
+	border-width: 0px;
+}
+
+@mixin kasper-input-range {
+	ul {
+		background-color: var(--list-background-color);
+		border: 1px solid var(--button-border-color);
+		border-bottom-left-radius: var(--border-radius);
+		border-bottom-right-radius: var(--border-radius);
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem;
+
+		> li {
+			background-color: var(--button-background-color);
+			border: 1px solid var(--button-border-color);
+			border-radius: var(--border-radius);
+			color: var(--button-foreground-color);
+			display: flex;
+
+			div.form-group {
+				flex-grow: 1;
+				margin: 0;
+				overflow: hidden;
+				padding: 0.5rem 0.5rem 0rem;
+				position: relative;
+				text-align: center;
+
+				label {
+					display: block;
+					flex: 1 0 auto;
+					font-size: 1.15rem;
+					font-weight: 600;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+
+					&[contenteditable="true"]:focus-visible {
+						outline: none;
+						box-shadow: 0 0 5px var(--color-shadow-primary);
+					}
+				}
+
+				input[type="range"] {
+					-webkit-appearance: none;
+					border-radius: var(--border-radius);
+					border-width: 0px;
+					cursor: pointer;
+					flex: 1 0 auto;
+					height: 16px;
+					margin: auto;
+					overflow: hidden;
+					position: relative;
+					width: 100%;
+
+					/* Styles for webkit-based browsers (Chrome, Safari) */
+					&::-webkit-slider-runnable-track {
+						@include range-track-thumb-styles;
+					}
+					&::-webkit-slider-thumb {
+						@include range-thumb-styles;
+					}
+
+					/* Styles for Firefox */
+					&::-moz-range-track {
+						@include range-track-thumb-styles;
+					}
+					&::-moz-range-thumb {
+						@include range-thumb-styles;
+					}
+
+					/* Foundry doesn't have a foucs-visible state for input range */
+					&:focus-visible {
+						box-shadow: 0 0 5px var(--color-shadow-primary);
+					}
+				}
+
+				p.notes {
+					font-size: 0.75rem;
+					line-height: 0.75rem;
+					margin: 0;
+				}
+
+				nav#context-menu {
+					font-size: var(--font-size-14);
+					text-align: left;
+				}
+			}
+
+			button[data-action] {
+				background-color: transparent;
+				border-radius: 0px;
+				border-width: 0px;
+				flex: 0 0 30px;
+				font-size: 1rem;
+				min-width: 30px;
+				margin: 0px;
+				max-width: 30px;
+				padding: 0rem;
+
+				i {
+					margin: 0;
+				}
+			}
+			button[data-action="sortable"] {
+				border-right: 1px solid var(--button-border-color);
+				order: -2;
+			}
+			button[data-action="decrease"] {
+				border-right: 1px solid var(--button-border-color);
+				order: -1;
+			}
+			button[data-action="increase"] {
+				border-left: 1px solid var(--button-border-color);
+				order: 1;
+			}
+		}
+
+		> li:not(:last-child) {
+			margin-bottom: 0.25rem;
+		}
+	}
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+input[type=range]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+input[type=range]:focus::-moz-range-track {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+input[type=range]:focus::-moz-range-thumb {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+
 #kasper-manager {
-	max-width: 315px;
-	min-width: 315px;
+	max-width: var(--sidebar-width);
+	min-width: var(--sidebar-width);
 
 	// Personal Preference
 	// Remove the padding from the .window-content class
@@ -36,14 +189,23 @@
 				cursor: grab;
 			}
 
+			&.player-can-see #context-menu li.context-item > i.fa-eye.fa-fw:before {
+				content: '\f070';
+			}
+
 			header {
 				background-color: var(--button-background-color);
-				border: 1px solid var(--color-border-light-primary);
+				border: 1px solid var(--button-border-color);
 				border-bottom: 2px solid var(--color-underline-header);	
 				border-top-left-radius: var(--border-radius);
 				border-top-right-radius: var(--border-radius);
+				color: var(--button-foreground-color);
 				display: flex;
 				flex-direction: row;
+
+				&:has(#context-menu) h1 {
+					white-space: nowrap;
+				}
 
 				h1 {
 					align-self: center;
@@ -51,6 +213,7 @@
 					flex: 1 0;
 					font-weight: 600;
 					order: 0;
+					overflow: hidden;
 					margin: 0px;
 					padding: 0.5rem 0.25rem;
 					text-align: center;
@@ -58,6 +221,12 @@
 					&[contenteditable="true"]:focus-visible {
 						outline: none;
 						box-shadow: 0 0 5px var(--color-shadow-primary);
+					}
+
+					&:not(:focus-within) {
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
 					}
 
 					nav#context-menu {
@@ -81,129 +250,16 @@
 					}
 				}
 				button[data-action="sortable"] {
-					border-right: 1px solid var(--color-border-light-primary);
+					border-right: 1px solid var(--button-border-color);
 					order: -1;
 				}
 				button[data-action="add-faction"] {
-					border-left: 1px solid var(--color-border-light-primary);
+					border-left: 1px solid var(--button-border-color);
 					order: 1;
 				}
 			}
 
-			ul {
-				background-color: var(--list-background-color);
-				border: 1px solid var(--color-border-light-primary);
-				border-bottom-left-radius: var(--border-radius);
-				border-bottom-right-radius: var(--border-radius);
-				list-style: none;
-				margin: 0;
-				padding: 0.5rem;
-
-				> li {
-					background-color: var(--button-background-color);
-					border: 1px solid var(--color-border-light-primary);
-					border-radius: var(--border-radius);
-					display: flex;
-
-					div.form-group {
-						flex-grow: 1;
-						overflow: hidden;
-						padding: 0.5rem 0.5rem 0rem;
-						position: relative;
-						text-align: center;
-
-						label {
-							display: block;
-							font-size: 1.15rem;
-							font-weight: 600;
-							overflow: hidden;
-							text-overflow: ellipsis;
-    						white-space: nowrap;
-
-							&[contenteditable="true"]:focus-visible {
-								outline: none;
-								box-shadow: 0 0 5px var(--color-shadow-primary);
-							}
-						}
-
-						input[type="range"] {
-							margin: auto;
-							-webkit-appearance: none;
-							position: relative;
-							overflow: hidden;
-							height: 16px;
-							width: 100%;
-							cursor: pointer;
-							border-radius: var(--border-radius);
-							border-width: 0px;
-
-							&::-webkit-slider-runnable-track {
-								background: rgba(0, 0, 0, 0.1);
-								border-radius: 0px;
-								border-width: 0px;
-								box-shadow: none;
-								height: 16px;
-							}
-							&::-webkit-slider-thumb {
-								-webkit-appearance: none;
-								width: 16px;
-								height: 16px;
-								background: var(--color-text-hyperlink);
-								box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
-								border-width: 0px;
-							}
-
-							/* Foundry doesn't have a foucs-visible state for input range */
-							&:focus-visible {
-								box-shadow: 0 0 5px var(--color-shadow-primary);
-							}
-						}
-
-						p.notes {
-							font-size: 0.75rem;
-							line-height: 0.75rem;
-							margin: 0;
-						}
-
-						nav#context-menu {
-							font-size: var(--font-size-14);
-							text-align: left;
-						}
-					}
-
-					button[data-action] {
-						background-color: transparent;
-						border-radius: 0px;
-						border-width: 0px;
-						flex: 0 0 30px;
-						font-size: 1rem;
-						min-width: 30px;
-						margin: 0px;
-						max-width: 30px;
-						padding: 0rem;
-	
-						i {
-							margin: 0;
-						}
-					}
-					button[data-action="sortable"] {
-						border-right: 1px solid var(--color-border-light-primary);
-						order: -2;
-					}
-					button[data-action="decrease-reputation"] {
-						border-right: 1px solid var(--color-border-light-primary);
-						order: -1;
-					}
-					button[data-action="increase-reputation"] {
-						border-left: 1px solid var(--color-border-light-primary);
-						order: 1;
-					}
-				}
-
-				> li:not(:last-child) {
-					margin-bottom: 0.25rem;
-				}
-			}
+			@include kasper-input-range;
 		}
 		
 		div.action-buttons {
@@ -252,12 +308,14 @@
 					font-size: 1rem;
 				}
 				p.notes {
+					bottom: 8px;
+					color: var(--color-text-light-highlight);
+					height: 16px;
+					left: 1rem;
+					line-height: 20px;
 					pointer-events: none;
 					position: absolute;
-					bottom: 8px;
-					left: 1rem;
-					height: 16px;
-					line-height: 20px;
+					text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
 				}
 			}
 		}
@@ -298,33 +356,33 @@
 
 		color: var(--color-text-light-highlight);
 
-		main section header {
-			background-color: var(--color-border-dark-3);
-			border-color: var(--color-border-dark-1);
-			
-			button[data-action=add-faction] {
+		main section {
+			header {
+				background-color: var(--color-border-dark-3);
 				border-color: var(--color-border-dark-1);
 				color: var(--color-text-light-highlight);
 			}
-		}
-		main section ul {
-			background-color: var(--color-border-dark-3);
-			border-color: var(--color-border-dark-1);
-
-			> li {
+			
+			ul {
 				background-color: var(--color-border-dark-3);
 				border-color: var(--color-border-dark-1);
-				
-				button[data-action=decrease-reputation], button[data-action=increase-reputation] {
+	
+				> li {
+					background-color: var(--color-border-dark-3);
 					border-color: var(--color-border-dark-1);
 					color: var(--color-text-light-highlight);
 				}
+			}
+					
+			button[data-action] {
+				border-color: var(--color-border-dark-1);
+				color: var(--color-text-light-highlight);
 			}
 		}
 
 		main div.action-buttons {
 			padding: 0rem 0.5rem;
-			button[data-action=add-reputation] {
+			button[data-action] {
 				margin: 0px;
 			}
 		}
@@ -335,109 +393,7 @@
 	section.preview {
 		margin: 0.5rem;
 
-		ul {
-			background-color: var(--list-background-color);
-			border: 1px solid var(--color-border-light-primary);
-			border-radius: var(--border-radius);
-			list-style: none;
-			margin: 0;
-			padding: 0.5rem;
-
-			> li {
-				background-color: var(--button-background-color);
-				border: 1px solid var(--color-border-light-primary);
-				border-radius: var(--border-radius);
-				display: flex;
-				flex-direction: row;
-
-				div.form-group {
-					flex: 1 0;
-					margin: 0px;
-					max-width: none;
-					padding: 0.5rem 0.5rem 0rem;
-					position: relative;
-					text-align: center;
-
-					label {
-						display: block;
-						flex: auto;
-						font-size: 1.15rem;
-						font-weight: 600;
-						line-height: normal;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-						width: 100%;
-					}
-
-					input[type="range"] {
-						flex: auto;
-						margin: auto;
-						-webkit-appearance: none;
-						position: relative;
-						overflow: hidden;
-						height: 16px;
-						width: 100%;
-						cursor: pointer;
-						border-radius: var(--border-radius);
-						border-width: 0px;
-
-						&::-webkit-slider-runnable-track {
-							background: rgba(0, 0, 0, 0.1);
-							border-radius: 0px;
-							border-width: 0px;
-							box-shadow: none;
-							height: 16px;
-						}
-						&::-webkit-slider-thumb {
-							-webkit-appearance: none;
-							width: 16px;
-							height: 16px;
-							background: var(--color-text-hyperlink);
-							box-shadow: -100vw 0 0 100vw var(--color-text-hyperlink);
-							border-width: 0px;
-						}
-					}
-
-					p.notes {
-						font-size: 0.75rem;
-						line-height: 0.75rem;
-						margin: 0;
-					}
-
-					nav#context-menu {
-						font-size: var(--font-size-14);
-						text-align: left;
-					}
-				}
-
-				button[data-action] {
-					background-color: transparent;
-					border-radius: 0px;
-					border-width: 0px;
-					flex: 0 1;
-					font-size: 1.25rem;
-					margin: 0px;
-					padding: 0.5rem;
-
-					i {
-						margin: 0;
-					}
-				}
-				button[data-action="decrease-reputation"] {
-					border-right: 1px solid var(--color-border-light-primary);
-					order: -1;
-				}
-				button[data-action="increase-reputation"] {
-					border-left: 1px solid var(--color-border-light-primary);
-					order: 1;
-				}
-			}
-
-			> li:not(:last-child) {
-				margin-bottom: 0.25rem;
-			}
-		}
+		@include kasper-input-range;
 	}
 
 	section.tiers {
@@ -499,5 +455,63 @@
 
 	footer {
 		padding-top: 8px;
+	}
+}
+
+
+/* Add Support for PF2e Dorako UI */
+#kasper-manager, #kasper-configure {
+	&.dorako-ui.dark-theme {
+		--button-background-color: var(--palette-primary, var(--glass-bg));
+		--button-border-color: var(--palette-primary-outline, var(--tertiary, var(--color-border-light-primary)));
+
+		.window-content {
+			box-shadow: none;
+		}
+
+		/* REMOVE DORAKO BOX SHADOW FROM BUTTONS TO ALLOW GOLDEN BORDER */
+		main section {
+			border-image-repeat: repeat;
+			border-image-slice: 11;
+			border-image-source: var(--ornamentation);
+			border-image-width: 14px;
+			border-style: double;
+
+			header, ul {
+				background-color: transparent;
+    			border-color: transparent;
+			}
+
+			header {
+				border-bottom: 2px solid var(--button-border-color);
+			}
+
+			[contenteditable="true"] {
+				&:hover {
+					background-color: var(--secondary-dark);
+					color: var(--color-text-light-highlight);
+				}
+				&:focus-within {
+					background-color: var(--secondary);
+					color: white;
+				}
+			}
+
+			 button[data-action] {
+				box-shadow: none;
+
+				&:hover {
+					background-color: var(--primary);
+					color: var(--color-text-light-highlight);
+				}
+			}
+
+			ul > li div.form-group input[type=range]::-webkit-slider-runnable-track {
+				background-color: rgba(255 255 255 / 10%);
+			}
+			ul > li div.form-group input[type=range]::-moz-range-track {
+				background-color: rgba(255 255 255 / 10%);
+			}
+		}
 	}
 }

@@ -4,7 +4,7 @@
 		"subtitle": "Karma Assessment and Player Evaluation Resource",
 		"settings": {
 			"minify.name": "Use Minified Look?",
-			"minify.hint": "This will make the UI smaller and more compact. Please be warned that this overlays the reputation label over the colored bar and may be hard to read on some screens.",
+			"minify.hint": "This will make the UI smaller and more compact. Please be warned that this overlays the reputation label over the colored bar and may be hard to read on some colors.",
 			"trigger": {
 				"name": "Activation Method?",
 				"hint": "How do you want to activate the KASPER UI? Dialog will add a button to the Journal Sidebar Header. Pinned will pin the window above the notes under the Journal Sidebar Tab.",
@@ -12,6 +12,11 @@
 					"dialog": "Dialog",
 					"pinned": "Pinned"
 				}
+			},
+			"disableWheel": {
+				"name": "Disable Mouse Wheel?",
+				"hint": "When enabled, the mouse wheel will not be able to adjust the reputation value unless the user is holding the CTRL key.",
+				"hintDisabled": "DISABLED: This setting is disabled when '{moduleTitle}' is enabled. Please use that module to configure how you would like this modules range inputs to function."
 			},
 			"config": {
 				"name": "Configure Global Defaults",
@@ -28,6 +33,10 @@
 			"dragDrop": {
 				"addReputation": "Add Reputation",
 				"dropHere": "Drop Here"
+			},
+			"contextMenu.togglePlayerView": {
+				"show": "Show to Players",
+				"hide": "Hide from Players"
 			}
 		},
 		"configure": {
@@ -46,7 +55,8 @@
 				"presets": {
 					"name": "Load Preset",
 					"hint": "This will load a preset of values for use with the selected reputation tracker.",
-					"custom.name": "Custom"
+					"custom.name": "Custom",
+					"inherit.name": "Inherit"
 				},
 				"minimum": {
 					"name": "Lowest Reputation Value",
@@ -71,22 +81,30 @@
 				"addTierLabel": "Set Tier Label"
 			},
 			"dialog": {
+				"overwriteGlobalDefaults": {
+					"title": "Override Global Defaults",
+					"content": "Warning! This will override the Global Defaults with these settings. Are you sure you want to continue?"
+				},
 				"updatePreset": {
 					"title": "Update {title} Preset",
 					"content": "Warning! This will overwrite the {title} preset, meaning any trackers using this preset will be updated. Are you sure you want to continue?"
 				},
 				"custom": {
 					"title": "Create a New Custom Preset",
-					"content": "Please enter a name for your new preset below.",
 					"label": "Preset Name",
-					"buttons.yes": "Create Preset",
-					"buttons.no": "Cancel",
-					"notifications": {
-						"error": "No preset name was provided. Preset was not created!",
-						"exists": "{name} already exists as a preset. Preset was not created!"
-					}
+					"hint": "Please enter a preset title. This title will be used to create an easy to find selector when using KASPER."
 				}
-			}
+			},
+			"tooltips": {
+				"overrideGlobalDefaults": "Hold SHIFT to override Global Defaults"
+			},
+			"notifications.error": {
+				"overwriteGlobalDefaultsRejected": "<strong>{title}</strong>: User choose to not overwrite Global Defaults. Preset was not updated!",
+				"noPresetTitle": "<strong>{title}</strong>: Preset Title is Required when creating a new custom preset. Preset was not created!",
+				"presetTitleExists": "<strong>{title}</strong>: <em>{preset}</em> already exists as a preset. Preset was not created!",
+				"presetTitleProtected": "<strong>{title}</strong>: <em>{preset}</em> is a protected keyword and cannot be used. Preset was not updated!"
+			},
+			"notifications.warn.overwriteRejected": "<strong>{title}</strong>: <em>{preset}</em> Preset was not updated!"
 		},
 		"reputation": {
 			"title": "Reputation Title",
@@ -96,6 +114,9 @@
 		},
 
 		"TIERS": {
+			"globalDefaults": {
+				"title": "Global Defaults"
+			},
 			"house-divided": {
 				"title": "A House Divided",
 				"labels": {
@@ -139,12 +160,15 @@
 				}
 			},
 			"generic": {
-				"title": "Global Config",
+				"title": "Generic",
 				"labels": {
 					"Infamous": "Infamous",
 					"Exalted": "Exalted",
-					"Hated": "Hated",
 					"Feared": "Feared",
+					"Loathed": "Loathed",
+					"Despised": "Despised",
+					"Hated": "Hated",
+					"Scorned": "Scorned",
 					"Neutral": "Neutral",
 					"Friendly": "Friendly",
 					"Allied": "Allied",
@@ -158,6 +182,18 @@
 					"Enemy": "Enemy",
 					"Neutral": "Neutral",
 					"Friendly": "Friendly"
+				}
+			},
+			"pf2e-reputations": {
+				"title": "Pathfinder 2e Reputations",
+				"labels": {
+					"Hunted": "Hunted",
+					"Hated": "Hated",
+					"Disliked": "Disliked",
+					"Ignored": "Ignored",
+					"Liked": "Liked",
+					"Admired": "Admired",
+					"Revered": "Revered"
 				}
 			}
 		}
