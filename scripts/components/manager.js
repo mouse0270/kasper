@@ -119,9 +119,13 @@ export const Manager = {
 				// Get All Factions where Viewable is False
 				const hiddenFaction = reputation.factions.filter(fac => fac?.viewable ?? false);
 
+				// If there are both shown and hidden factions, Show both options
 				if (shownFaction.length > 0 && hiddenFaction.length > 0) return true;
+				// If checkFactions is shown and there are shown factions, show option
 				else if (shownFaction.length > 0 && checkFactions == 'shown') return true;
+				// If checkFactions is hidden and there are hidden factions, show option
 				else if (hiddenFaction.length > 0 && checkFactions == 'hidden') return true;
+				// Else return false
 				else return false;
 			}
 
