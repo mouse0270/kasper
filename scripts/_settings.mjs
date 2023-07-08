@@ -24,7 +24,6 @@ Hooks.once('setup', async () => {
 
 			// Get Window and Update Data
 			let window = Object.entries(ui.windows).find(w => w[1].id == `${MODULE.ID}-manager`)?.[1] ?? false;
-			MODULE.debug('Updating Storage', window, value);
 			if (window) window.vue.session.reputations = value;
 		}
 	});
@@ -78,7 +77,7 @@ Hooks.once('setup', async () => {
 	MODULE.setting('register', 'disableWheel', {
 		type: Boolean,
 		default: true,
-
+		config: game.user.isGM,
 		// If disable-mouse-wheel-sliders is enabled, show hint disabled localization
 		// Otherwise, show hint localization
 		hint: (disableMouseWheelSliders?.active ?? false) ? MODULE.localize('settings.disableWheel.hintDisabled', {moduleTitle: disableMouseWheelSliders?.title }) :  MODULE.localize('settings.disableWheel.hint')
@@ -86,8 +85,9 @@ Hooks.once('setup', async () => {
 
 	// If disable-mouse-wheel-sliders is enabled
 	// When user opens the Settings Config window, find setting and disable it.
-	if (disableMouseWheelSliders?.active ?? false) {
+	if (game.user.isGM && (disableMouseWheelSliders?.active ?? false)) {
 		Hooks.on('renderSettingsConfig', (app, [elem], data) => {
+			MODULE.debug('Disabling Mouse Wheel Setting', elem.querySelector(`input[name="${MODULE.ID}.disableWheel"]`));
 			elem.querySelector(`input[name="${MODULE.ID}.disableWheel"]`).disabled = true;
 		});
 	}

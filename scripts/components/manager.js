@@ -47,17 +47,30 @@ export const Manager = {
 	},
 	mounted() {
 		// Define Viewable by Player
-		function cmTogglePlayerView(self, elem) {
+		function cmTogglePlayerView(self, elem, force = null) {
 			// Get Reputation UUID
 			const reputationUuid = elem.closest('section').id;
+			const factionUuid = elem.closest('li')?.id ?? null;
+
+			// Get Reputation
+			let reputation = self.reputations.find(rep => rep.uuid == reputationUuid);
+
+			// If Faction UUID is defined, get Faction
+			if (factionUuid) reputation = reputation.factions.find(fac => fac.uuid == factionUuid);
 
 			// Update if Player can View Reputation
-			self.reputations.find(rep => rep.uuid == reputationUuid).viewable = !self.reputations.find(rep => rep.uuid == reputationUuid)?.viewable ?? false;
+			reputation.viewable = !(reputation?.viewable ?? false);
+
+			// If force is not null, set all reputations to force
+			if (force != null) {
+				// set reputation viewable to force
+				reputation.viewable = force;
+				// set all factions to force
+				reputation.factions.forEach(fac => fac.viewable = force);
+			}
 
 			// Save Reputations
 			MODULE.setting('storage', self.reputations);
-
-			MODULE.log('cmTogglePlayerView', self, self.reputations);
 		}
 		// Define Configure Context Menu Function
 		function cmConfigure(self, elem) {
@@ -87,16 +100,47 @@ export const Manager = {
 
 		// Create Function to Determin if Reputation is Viewable by Players
 		// - Used to display if ContextMenu Option is Show or Hide
-		const isViewable = (elem) => {
+		const isViewable = (elem, checkFactions = false) => {
 			// Get Reputation UUID
 			const reputationUuid = elem.closest('section').id;
+			const factionUuid = elem.closest('li')?.id ?? null;
+
+			// Get Reputation
+			let reputation = this.reputations.find(rep => rep.uuid == reputationUuid);
+
+			// If Faction UUID is defined, get Faction
+			if (factionUuid) reputation = reputation.factions.find(fac => fac.uuid == factionUuid);
+
+			// Check if all factions are viewable
+			
+			if (!factionUuid && checkFactions) {
+				// Get All Factions where Viewable is True
+				const shownFaction = reputation.factions.filter(fac => !(fac?.viewable ?? false));
+				// Get All Factions where Viewable is False
+				const hiddenFaction = reputation.factions.filter(fac => fac?.viewable ?? false);
+
+				if (shownFaction.length > 0 && hiddenFaction.length > 0) return true;
+				else if (shownFaction.length > 0 && checkFactions == 'shown') return true;
+				else if (hiddenFaction.length > 0 && checkFactions == 'hidden') return true;
+				else return false;
+			}
 
 			// Return if Players can See Reputation
-			return this.reputations.find(rep => rep.uuid == reputationUuid)?.viewable ?? false;
+			return reputation?.viewable ?? false;
 		}
 
 		// Dine Context Menu Options
 		const cmOptions = [{
+			name: MODULE.localize('manager.contextMenu.togglePlayerView.hide'),
+			icon: '<i class="fa-regular fa-eye-slash"></i>',
+			condition: ([elem]) => game.user.isGM && isViewable(elem),
+			callback: (([elem]) => cmTogglePlayerView(this, elem))
+		}, {
+			name: MODULE.localize('manager.contextMenu.togglePlayerView.show'),
+			icon: '<i class="fa-regular fa-eye"></i>',
+			condition: ([elem]) => game.user.isGM && !isViewable(elem),
+			callback: (([elem]) => cmTogglePlayerView(this, elem))
+		},{
 			name: game.i18n.localize('Configure'),
 			icon: '<i class="fa-regular fa-sliders"></i>',
 			condition: game.user.isGM,
@@ -109,17 +153,17 @@ export const Manager = {
 		}]
 
 		// Add Context Menu Options to Reputation and Faction
-		new ContextMenu(this.$el, 'section header', [{
-			name: MODULE.localize('manager.contextMenu.togglePlayerView.hide'),
-			icon: '<i class="fa-regular fa-eye-slash"></i>',
-			condition: ([elem]) => game.user.isGM && isViewable(elem),
-			callback: (([elem]) => cmTogglePlayerView(this, elem))
-		}, {
-			name: MODULE.localize('manager.contextMenu.togglePlayerView.show'),
+		new ContextMenu(this.$el, 'section header', [...cmOptions.slice(0, 2), ...[{
+			name: MODULE.localize('manager.contextMenu.togglePlayerView.showAll'),
 			icon: '<i class="fa-regular fa-eye"></i>',
-			condition: ([elem]) => game.user.isGM && !isViewable(elem),
-			callback: (([elem]) => cmTogglePlayerView(this, elem))
-		}].concat(cmOptions));
+			condition: ([elem]) => game.user.isGM && isViewable(elem, 'shown'),
+			callback: (([elem]) => cmTogglePlayerView(this, elem, true))
+		},{
+			name: MODULE.localize('manager.contextMenu.togglePlayerView.hideAll'),
+			icon: '<i class="fa-regular fa-eye-slash"></i>',
+			condition: ([elem]) => game.user.isGM && isViewable(elem, 'hidden'),
+			callback: (([elem]) => cmTogglePlayerView(this, elem, false))
+		}], ...cmOptions.slice(2)]);
 		new ContextMenu(this.$el, 'section ul li', cmOptions);
 
 		// Create Sortable for Reputations

@@ -3,6 +3,10 @@
 		"title": "👻 KASPER",
 		"subtitle": "Karma Assessment and Player Evaluation Resource",
 		"settings": {
+			"canPlayersView": {
+				"name": "Can Players View?",
+				"hint": "When enabled, factions will default to visible for players. Enable this setting to show all factions by default. Leave disabled to hide all factions by default."
+			},
 			"minify.name": "Use Minified Look?",
 			"minify.hint": "This will make the UI smaller and more compact. Please be warned that this overlays the reputation label over the colored bar and may be hard to read on some colors.",
 			"trigger": {
@@ -36,7 +40,9 @@
 			},
 			"contextMenu.togglePlayerView": {
 				"show": "Show to Players",
-				"hide": "Hide from Players"
+				"showAll": "Show All Factions to Players",
+				"hide": "Hide from Players",
+				"hideAll": "Hide All Factions from Players"
 			}
 		},
 		"configure": {
