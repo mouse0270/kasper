@@ -156,8 +156,13 @@ export const Manager = {
 			callback: (([elem]) => cmDelete(this, elem))
 		}]
 
+		// TODO: Remove this when Foundry v0.10.x is no longer supported
+		// ? To add support for v10, convert element to jQuery
+		let elem = this.$el;
+		if (isNewerVersion('11', game.version)) elem = $(this.$el);
+
 		// Add Context Menu Options to Reputation and Faction
-		new ContextMenu(this.$el, 'section header', [...cmOptions.slice(0, 2), ...[{
+		new ContextMenu(elem, 'section header', [...cmOptions.slice(0, 2), ...[{
 			name: MODULE.localize('manager.contextMenu.togglePlayerView.showAll'),
 			icon: '<i class="fa-regular fa-eye"></i>',
 			condition: ([elem]) => game.user.isGM && isViewable(elem, 'shown'),
@@ -168,7 +173,7 @@ export const Manager = {
 			condition: ([elem]) => game.user.isGM && isViewable(elem, 'hidden'),
 			callback: (([elem]) => cmTogglePlayerView(this, elem, false))
 		}], ...cmOptions.slice(2)]);
-		new ContextMenu(this.$el, 'section ul li', cmOptions);
+		new ContextMenu(elem, 'section ul li', cmOptions);
 
 		// Create Sortable for Reputations
 		this.setSortable(this.$el.querySelector('.sortablejs-reputation'), {

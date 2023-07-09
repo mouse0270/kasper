@@ -1,5 +1,6 @@
-# Version 1.1.1 - The Ghost of Foundry VTT v10 Strikes Back
+# Version 1.1.2 - The Ghost of Foundry VTT v10 Strikes Back
 - Fixed an issue when registering a game setting in v10 using `game.user.isGM`
+- Fixed an issue with v10 Foundry VTT ContextMenu expecting a jQuery object instead of a HTMLElement
 
 # Version 1.1.0 - B...........OOOOO, Did I scare you?
 - Ajusted the Generic Presets Labels from
