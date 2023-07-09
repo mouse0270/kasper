@@ -77,7 +77,6 @@ Hooks.once('setup', async () => {
 	MODULE.setting('register', 'disableWheel', {
 		type: Boolean,
 		default: true,
-		config: game.user.isGM,
 		// If disable-mouse-wheel-sliders is enabled, show hint disabled localization
 		// Otherwise, show hint localization
 		hint: (disableMouseWheelSliders?.active ?? false) ? MODULE.localize('settings.disableWheel.hintDisabled', {moduleTitle: disableMouseWheelSliders?.title }) :  MODULE.localize('settings.disableWheel.hint')
@@ -85,7 +84,7 @@ Hooks.once('setup', async () => {
 
 	// If disable-mouse-wheel-sliders is enabled
 	// When user opens the Settings Config window, find setting and disable it.
-	if (game.user.isGM && (disableMouseWheelSliders?.active ?? false)) {
+	if (disableMouseWheelSliders?.active ?? false) {
 		Hooks.on('renderSettingsConfig', (app, [elem], data) => {
 			MODULE.debug('Disabling Mouse Wheel Setting', elem.querySelector(`input[name="${MODULE.ID}.disableWheel"]`));
 			elem.querySelector(`input[name="${MODULE.ID}.disableWheel"]`).disabled = true;

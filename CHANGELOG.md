@@ -1,3 +1,6 @@
+# Version 1.1.1 - The Ghost of Foundry VTT v10 Strikes Back
+- Fixed an issue when registering a game setting in v10 using `game.user.isGM`
+
 # Version 1.1.0 - B...........OOOOO, Did I scare you?
 - Ajusted the Generic Presets Labels from
   - Infamous to Loathed
