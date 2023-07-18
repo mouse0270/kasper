@@ -48,18 +48,33 @@
 				position: relative;
 				text-align: center;
 
-				label {
-					display: block;
-					flex: 1 0 auto;
-					font-size: 1.15rem;
-					font-weight: 600;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
+				> div {
+					align-items: center;
+					display: flex;
+					flex-direction: row;
 
-					&[contenteditable="true"]:focus-visible {
-						outline: none;
-						box-shadow: 0 0 5px var(--color-shadow-primary);
+					i {
+						flex: 0 1;
+						margin-right: 0.25rem;
+					}
+
+					label {
+						display: block;
+						flex: 1 0 auto;
+						font-size: 1.15rem;
+						font-weight: 600;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+	
+						&[contenteditable="true"]:focus-visible {
+							outline: none;
+							box-shadow: 0 0 5px var(--color-shadow-primary);
+						}
+					}
+
+					i + label {
+						text-align: left;
 					}
 				}
 
@@ -203,30 +218,44 @@ input[type=range]:focus::-moz-range-thumb {
 					white-space: nowrap;
 				}
 
-				h1 {
-					align-self: center;
-					border-width: 0px;
+				> div {
+					align-items: center;
+					display: flex;
 					flex: 1 0;
-					font-weight: 600;
-					order: 0;
-					overflow: hidden;
-					margin: 0px;
-					padding: 0.5rem 0.25rem;
-					text-align: center;
 
-					&[contenteditable="true"]:focus-visible {
-						outline: none;
-						box-shadow: 0 0 5px var(--color-shadow-primary);
+					i {
+						margin: 0px 0.25rem;
 					}
 
-					&:not(:focus-within) {
+					h1 {
+						align-self: center;
+						border-width: 0px;
+						flex: 1 0;
+						font-weight: 600;
+						order: 0;
 						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
+						margin: 0px;
+						padding: 0.5rem 0.25rem;
+						text-align: center;
+	
+						&[contenteditable="true"]:focus-visible {
+							outline: none;
+							box-shadow: 0 0 5px var(--color-shadow-primary);
+						}
+	
+						&:not(:focus-within) {
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+	
+						nav#context-menu {
+							font-size: var(--font-size-14);
+							text-align: left;
+						}
 					}
 
-					nav#context-menu {
-						font-size: var(--font-size-14);
+					i + h1 {
 						text-align: left;
 					}
 				}

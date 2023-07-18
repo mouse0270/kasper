@@ -20,6 +20,8 @@ export default class CORE {
 	static installAPI = () => {
 		// TODO: API
 		game.modules.get(MODULE.ID).API = {
+			// Open Kasper's Manager
+			open: () => { new ManagerApp({}).render(true); },
 			// Add Preset
 			addPreset: (preset) => {
 				// Check if Preset already Exists
@@ -27,8 +29,10 @@ export default class CORE {
 
 				// Add Preset to Presets
 				MODULE.setting('presets').push(preset);
-			},
+			}
 		};
+		// Duplicate API
+		game.modules.get(MODULE.ID).api = game.modules.get(MODULE.ID).API;
 		// The API is not ready
 		return;
 	}

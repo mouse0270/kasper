@@ -6,6 +6,7 @@ import { MODULE } from '../_module.mjs';
 
 // Get Configuration Dialog
 import { ConfigureApp } from '../dialogs/configure.mjs';
+import VueDialog from '../lib/components/dialog.js';
 
 export const Manager = {
 	data() {
@@ -46,6 +47,41 @@ export const Manager = {
 		}
 	},
 	mounted() {
+		// Define Set Alt Title Function
+		async function cmSetAltTitle(self, elem) {
+			// Get Reputation UUID
+			const reputationUuid = elem.closest('section').id;
+			const factionUuid = elem.closest('li')?.id ?? null;
+
+			// Get Reputation
+			let reputation = self.reputations.find(rep => rep.uuid == reputationUuid);
+
+			// If Faction UUID is defined, get Faction
+			if (factionUuid) reputation = reputation.factions.find(fac => fac.uuid == factionUuid);
+
+			// Show Prompt for Preset Title
+			const altTitle = await VueDialog.Prompt(`<h3>${MODULE.localize('manager.contextMenu.altTitle')}</h3>`, {
+				label: MODULE.localize('manager.dialog.setAltTitle.label'),
+				type: String,
+				value: reputation?.altTitle ?? '',
+				hint: MODULE.localize('manager.dialog.setAltTitle.hint'),
+			}, (elem, event, session) => {
+				MODULE.log(elem, event, session);
+
+				// Return value
+				return elem.querySelector('input').value.trim();
+			});
+
+			// If altTitle is cancel, user closed input
+			if (altTitle == 'cancel') return;
+
+			// set altTitle
+			reputation.altTitle = altTitle;
+			if (altTitle == '') delete reputation.altTitle;
+
+			// Save Reputations
+			MODULE.setting('storage', self.reputations);
+		}
 		// Define Viewable by Player
 		function cmTogglePlayerView(self, elem, force = null) {
 			// Get Reputation UUID
@@ -135,6 +171,11 @@ export const Manager = {
 
 		// Dine Context Menu Options
 		const cmOptions = [{
+			name: MODULE.localize('manager.contextMenu.altTitle'),
+			icon: '<i class="fa-regular fa-masks-theater"></i>',
+			condition: game.user.isGM,
+			callback: (([elem]) => cmSetAltTitle(this, elem))
+		},{
 			name: MODULE.localize('manager.contextMenu.togglePlayerView.hide'),
 			icon: '<i class="fa-regular fa-eye-slash"></i>',
 			condition: ([elem]) => game.user.isGM && isViewable(elem),
@@ -156,7 +197,7 @@ export const Manager = {
 			callback: (([elem]) => cmDelete(this, elem))
 		}]
 
-		// TODO: Remove this when Foundry v0.10.x is no longer supported
+		// TODO: Remove this when Foundry v10.x is no longer supported
 		// ? To add support for v10, convert element to jQuery
 		let elem = this.$el;
 		if (isNewerVersion('11', game.version)) elem = $(this.$el);

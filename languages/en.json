@@ -38,11 +38,20 @@
 				"addReputation": "Add Reputation",
 				"dropHere": "Drop Here"
 			},
-			"contextMenu.togglePlayerView": {
-				"show": "Show to Players",
-				"showAll": "Show All Factions to Players",
-				"hide": "Hide from Players",
-				"hideAll": "Hide All Factions from Players"
+			"contextMenu": {
+				"altTitle": "Set Alternative Title for Players",
+				"togglePlayerView": {
+					"show": "Show to Players",
+					"showAll": "Show All Factions to Players",
+					"hide": "Hide from Players",
+					"hideAll": "Hide All Factions from Players"
+				}
+			},
+			"dialog": {
+				"setAltTitle": {
+					"label": "Alternative Title",
+					"hint": "When not blank, this value will be showed to the players instead of the default title. This is useful when hiding the faction name from players."
+				}
 			}
 		},
 		"configure": {
