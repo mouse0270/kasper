@@ -23,7 +23,7 @@ export class ManagerApp extends VueApplication {
 			// TODO: Add Support for Resizing
 			resizable: false,
 			// If User is GM, Allow Drag and Drop
-			dragDrop: game.user.isGM ? [{ dropSelector: null }] : [],
+			dragDrop: game.user.isGM ? [{ dropSelector: '.window-content' }] : [],
 			component: Manager
 		});
 	}
