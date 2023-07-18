@@ -1,5 +1,6 @@
 # Version 1.1.3 - Hidden Faces Masquerade Gala
 - Added the option to set an `Alt Title` that will be displayed to players who are not a GM. Game masters will always see the real title, but will get a small icon to the left of the title to show that it has been masked.
+- Added API option to open KASPER Window `game.modules.get('kasper').api.open()`
 
 # Version 1.1.2 - The Ghost of Foundry VTT v10 Strikes Back
 - Fixed an issue when registering a game setting in v10 using `game.user.isGM`
