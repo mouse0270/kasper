@@ -1,5 +1,5 @@
 # Version 1.1.3.1 - Pathfinder 2e Attitudes Preset
-- Added a Preset for Pathfinder 2e Attitudes found on [https://2e.aonprd.com/Rules.aspx?ID=519](https://2e.aonprd.com/Rules.aspx?ID=519)
+- Added a Preset for Pathfinder 2e Attitudes found on [Measuring Success and Progress](https://2e.aonprd.com/Rules.aspx?ID=519)
 
 # Version 1.1.3 - Hidden Faces Masquerade Gala
 - Added the option to set an `Alt Title` that will be displayed to players who are not a GM. Game masters will always see the real title, but will get a small icon to the left of the title to show that it has been masked.
