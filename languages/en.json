@@ -210,6 +210,16 @@
 					"Admired": "Admired",
 					"Revered": "Revered"
 				}
+			},
+			"pf2e-attitudes": {
+				"title": "Pathfinder 2e Attitudes",
+				"labels": {
+					"Hostile": "Hostile",
+					"Unfriendly": "Unfriendly",
+					"Indifferent": "Indifferent",
+					"Friendly": "Friendly",
+					"Helpful": "Helpful"
+				}
 			}
 		}
 	}

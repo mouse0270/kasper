@@ -111,6 +111,21 @@ Hooks.once('setup', async () => {
 					[100, MODULE.localize(`TIERS.generic.labels.Revered`)],
 				]
 			}
+		}, 
+		// Pathfinder 2e Attitudes
+		{
+			key: 'pf2e-attitudes',
+			name: MODULE.localize(`TIERS.pf2e-attitudes.title`),
+			settings: {
+				min: -2, max: 2, step: 1, default: 0, colorize: true,
+				tiers: [
+					[-2, MODULE.localize(`TIERS.pf2e-attitudes.labels.Hostile`)],
+					[-1, MODULE.localize(`TIERS.pf2e-attitudes.labels.Unfriendly`)],
+					[0, MODULE.localize(`TIERS.pf2e-attitudes.labels.Indifferent`)],
+					[1, MODULE.localize(`TIERS.pf2e-attitudes.labels.Friendly`)],
+					[2, MODULE.localize(`TIERS.pf2e-attitudes.labels.Helpful`)]
+				]
+			}
 		},  
 		// Pathfinder 2e Reputations
 		{
@@ -128,7 +143,7 @@ Hooks.once('setup', async () => {
 					[50, MODULE.localize(`TIERS.pf2e-reputations.labels.Revered`)]
 				]
 			}
-		}, 
+		},
 		// Simple Settings
 		{
 			key: 'simple',
