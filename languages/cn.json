@@ -1,0 +1,226 @@
+{
+	"kasper": {
+		"title": "👻 KASPER",
+		"subtitle": "Karma Assessment and Player Evaluation Resource",
+		"settings": {
+			"canPlayersView": {
+				"name": "玩家可见？",
+				"hint": "当开启时，派系会向玩家默认可见。开启本设置会默认使所有派系向玩家可见。关闭本设置会默认使所有派系向玩家不可见。"
+			},
+			"minify.name": "使用迷你窗口？",
+			"minify.hint": "这会使UI更小更精简。请注意这会使声望标签叠在彩色条上，在某些色彩组合上会降低可读性。",
+			"trigger": {
+				"name": "激活方式？",
+				"hint": "你希望如何启动KASPER UI？按钮形式会在日志侧边栏顶部加一个按钮。固定窗口形式会在日志侧边栏上部固定一个窗口。",
+				"choices": {
+					"dialog": "按钮形式",
+					"pinned": "固定窗口形式"
+				}
+			},
+			"disableWheel": {
+				"name": "关闭鼠标滚轮？",
+				"hint": "当启用时，鼠标滚轮会无法调整声望值，除非用户在滚轮的同时按下Ctrl键。",
+				"hintDisabled": "关闭: 本项设置在'{moduleTitle}'开启时会关闭。请使用那个模组来设置相关行为。"
+			},
+			"config": {
+				"name": "设置全局默认",
+				"hint": "这里是全声望追踪条的默认设置。你可以在管理窗口右键单独的声望追踪条来个别设置。",
+				"label": "设置全局默认"
+			}
+		},
+		"manager": {
+			"title": "管理",
+			"sortable": "拖曳以排序",
+			"addFaction": "添加派系",
+			"decreaseReputation": "减少声望",
+			"increaseReputation": "增加声望",
+			"dragDrop": {
+				"addReputation": "增加声望",
+				"dropHere": "拖到这里"
+			},
+			"contextMenu": {
+				"altTitle": "设置给玩家展示的别名",
+				"togglePlayerView": {
+					"show": "展示给玩家",
+					"showAll": "对玩家展示所有派系",
+					"hide": "对玩家隐藏",
+					"hideAll": "对玩家隐藏所有派系"
+				}
+			},
+			"dialog": {
+				"setAltTitle": {
+					"label": "别名",
+					"hint": "当不为空时，这个名字会被展示给玩家。当你想向玩家隐藏派系的真实名称时很有用。"
+				}
+			}
+		},
+		"configure": {
+			"title": "设置",
+			"titles": {
+				"global": "调整全局设置",
+				"reputation": "调整{title}声望设置",
+				"faction": "调整{title}派系设置"
+			},
+			"settings": {
+				"title": "定义数值范围",
+				"override": {
+					"name": "定义为特殊设置",
+					"hint": "本派系和子项派系的设置会比母项的设置更优先生效。"
+				},
+				"presets": {
+					"name": "加载预设",
+					"hint": "加载一组预设好的声望追踪条的数值套。",
+					"custom.name": "自定义",
+					"inherit.name": "继承"
+				},
+				"minimum": {
+					"name": "最低声望值",
+					"hint": "这一个声望能达到的最低值。"
+				},
+				"maximum": {
+					"name": "最高声望值",
+					"hint": "这是一个声望能达到的最高值。"
+				},
+				"default": {
+					"name": "默认声望值",
+					"hint": "当一个新的派系被添加时，会从默认声望值开始。"
+				},
+				"colorize": {
+					"name": "彩色声望条？",
+					"hint": "开启此项会使声望追踪条根据声望值自动变色。"
+				}
+			},
+			"tiers": {
+				"title": "定义等级",
+				"headingLabel": "等级标签",
+				"addTierLabel": "添加等级标签"
+			},
+			"dialog": {
+				"overwriteGlobalDefaults": {
+					"title": "覆写全局默认设置",
+					"content": "警告！这会覆写这些设置的全局默认设置值。请问你确定要这么做吗？"
+				},
+				"updatePreset": {
+					"title": "更新{title}预设值",
+					"content": "警告！这会覆写{title}预设值，这意味着所有使用该预设值的追踪条都会被更新，你确定要这么做吗？"
+				},
+				"custom": {
+					"title": "添加一组新的预设值",
+					"label": "预设值名称",
+					"hint": "请输入预设值的名称。"
+				}
+			},
+			"tooltips": {
+				"overrideGlobalDefaults": "按住SHIFT来覆写全局默认设置"
+			},
+			"notifications.error": {
+				"overwriteGlobalDefaultsRejected": "<strong>{title}</strong>: 用户选择不覆写全局默认设置，预设值未被更新！",
+				"noPresetTitle": "<strong>{title}</strong>: 当创建一组新的预设值时，预设值标题为必须项目。预设值未被成功创建！",
+				"presetTitleExists": "<strong>{title}</strong>: <em>{preset}</em>预设值已存在。未成功创建！",
+				"presetTitleProtected": "<strong>{title}</strong>: <em>{preset}</em>是一个受到保护的关键词，不能被用来使用。预设值未被更新！"
+			},
+			"notifications.warn.overwriteRejected": "<strong>{title}</strong>: <em>{preset}</em>预设值未被更新！"
+		},
+		"reputation": {
+			"title": "声望标题",
+			"faction": {
+				"title": "派系标题"
+			}
+		},
+
+		"TIERS": {
+			"globalDefaults": {
+				"title": "全局默认设置"
+			},
+			"house-divided": {
+				"title": "A House Divided",
+				"labels": {
+					"Despised": "Despised",
+  					"Scorned": "Scorned",
+					"Unfriendly": "Unfriendly",
+					"Neutral": "Neutral",
+					"Friendly": "Friendly",
+					"Loyal": "Loyal",
+					"Devoted": "Devoted"
+				}
+			}, 
+			"fallout": {
+				"title": "Fallout",
+				"labels": {
+					"VeryGood": "Very Good",
+					"Good": "Good",
+					"Neutral": "Neutral",
+					"Bad": "Bad",
+					"VeryBad": "Very Bad"
+				}
+			},
+			"solider-ranks": {
+				"title": "Solider Ranks",
+				"labels": {
+					"Unlisted": "Unlisted",
+					"Private": "Private",
+					"Corporal": "Corporal",
+					"Sergeant": "Sergeant",
+					"MasterSergeant": "Master Sergeant",
+					"SecondLieutenant": "Second Lieutenant",
+					"FirstLieutenant": "First Lieutenant",
+					"Captain": "Captain",
+					"Major": "Major",
+					"Colonel": "Colonel",
+					"BrigadierGeneral": "Brigadier General",
+					"MajorGeneral": "Major General",
+					"LieutenantGeneral": "Lieutenant General",
+					"General": "General",
+					"Commander": "Commander"
+				}
+			},
+			"generic": {
+				"title": "generic",
+				"labels": {
+					"Infamous": "Infamous",
+					"Exalted": "Exalted",
+					"Feared": "Feared",
+					"Loathed": "Loathed",
+					"Despised": "Despised",
+					"Hated": "Hated",
+					"Scorned": "Scorned",
+					"Neutral": "Neutral",
+					"Friendly": "Friendly",
+					"Allied": "Allied",
+					"Respcted": "Respected",
+					"Revered": "Revered"
+				}
+			},
+			"simple": {
+				"title": "简易",
+				"labels": {
+					"Enemy": "敌人",
+					"Neutral": "中立",
+					"Friendly": "友好"
+				}
+			},
+			"pf2e-reputations": {
+				"title": "开拓者2E 声望",
+				"labels": {
+					"Hunted": "狩猎",
+					"Hated": "仇恨",
+					"Disliked": "厌恶",
+					"Ignored": "忽视",
+					"Liked": "喜爱",
+					"Admired": "钦佩",
+					"Revered": "尊敬"
+				}
+			},
+			"pf2e-attitudes": {
+				"title": "开拓者2E 态度",
+				"labels": {
+					"Hostile": "敌对",
+					"Unfriendly": "不友善",
+					"Indifferent": "不关心",
+					"Friendly": "友善",
+					"Helpful": "乐于帮助"
+				}
+			}
+		}
+	}
+}
